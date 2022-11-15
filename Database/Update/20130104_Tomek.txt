@@ -1,0 +1,2 @@
+ALTER TABLE tbl_parametres ADD COLUMN idtitotransactionhandpays integer;
+ALTER TABLE tbl_parametres ADD COLUMN idtitotransactiontickets integer;

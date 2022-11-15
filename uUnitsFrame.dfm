@@ -1,0 +1,2 @@
+inherited UnitsFrame: TUnitsFrame
+end

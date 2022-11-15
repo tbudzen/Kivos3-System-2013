@@ -1,0 +1,452 @@
+unit uSystemParametersFrame;
+
+interface
+
+uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uBaseFrame, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
+  dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee,
+  dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
+  dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinOffice2010Black, dxSkinOffice2010Blue, dxSkinOffice2010Silver,
+  dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus,
+  dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine, dxSkinVS2010,
+  dxSkinWhiteprint, dxSkinXmas2008Blue, Vcl.Menus, Vcl.StdCtrls, cxButtons,
+  cxTextEdit, cxLabel, Data.DB, MemDS, DBAccess, PgAccess, Vcl.Mask, JvExMask,
+  JvSpin, JvDataSource, Vcl.ExtCtrls, Vcl.DBCtrls, JvDBControls, cxMaskEdit,
+  cxSpinEdit, cxTimeEdit, cxDBEdit, cxDropDownEdit, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, udataBase, uSystem, cxCurrencyEdit,
+  uGlobals;
+
+type
+  TSystemParametersFrame = class(TBaseFrame)
+    cxLabel3: TcxLabel;
+    cxLabel1: TcxLabel;
+    cxLabel4: TcxLabel;
+    btn_Save: TcxButton;
+    PgQuery_Execute: TPgQuery;
+    cxTimeEdit_GamingDate: TcxTimeEdit;
+    cxLabel5: TcxLabel;
+    cxDBLookupComboBox_DefalutTransactions: TcxDBLookupComboBox;
+    cxLabel6: TcxLabel;
+    cxLabel7: TcxLabel;
+    cxDBLookupComboBox_TableDropTransaction: TcxDBLookupComboBox;
+    cxLabel8: TcxLabel;
+    cxDBLookupComboBox_TableFillTransaction: TcxDBLookupComboBox;
+    cxLabel9: TcxLabel;
+    cxDBLookupComboBox_TableCreditTransaction: TcxDBLookupComboBox;
+    cxDBLookupComboBox_TITO: TcxDBLookupComboBox;
+    cxLabel10: TcxLabel;
+    cxLabel11: TcxLabel;
+    cxCurrencyEdit_Difrence: TcxCurrencyEdit;
+    GroupBox_Import: TGroupBox;
+    Label1: TLabel;
+    CheckBox_Import: TCheckBox;
+    cxCurrencyEdit_timeout: TcxCurrencyEdit;
+    cxCurrencyRateAlert: TcxCurrencyEdit;
+    cxDBLookupComboBox_DefaultCurrency: TcxDBLookupComboBox;
+    cxDBLookupComboBox_Workstation: TcxDBLookupComboBox;
+    Label2: TLabel;
+    cxLabel2: TcxLabel;
+    cxLabel12: TcxLabel;
+    cxDBLookupComboBox_TITO_Handpays: TcxDBLookupComboBox;
+    cxDBLookupComboBox_TITO_Tickets: TcxDBLookupComboBox;
+    procedure btn_SaveClick(Sender: TObject);
+    procedure cxDBLookupComboBox_TITOPropertiesEditValueChanged(
+      Sender: TObject);
+  private
+    FListTransactions: TResultHandle;
+    FListMultipleTransactions:TResultHandle;
+    FListMultipleSubTransactions:TResultHandle;
+    FDefalultTransactions: TResultHandle;
+    FListDropTableTransactions: TResultHandle;
+    FListFillTableTransactions: TResultHandle;
+    FlistCreditTableTransactions: TResultHandle;
+    FListCurrency: TResultHandle;
+    FListDefaultCurrency: TResultHandle;
+    FListTITO : TResultHandle;
+    FListTITOHandpays : TResultHandle;
+    FListTITOTickets : TResultHandle;
+    FListWorkStation:TResultHandle;
+    FDefaultWorkstation:TResultHandle;
+  public
+    constructor Create(AOwner: TComponent); override;
+    Destructor Destroy; override;
+  end;
+
+var
+  SystemParametersFrame: TSystemParametersFrame;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  uFrmMain;
+
+resourcestring
+  cValueName_GamingDay = 'GAMING_DAY';
+
+  // ##############################################################################
+
+procedure TSystemParametersFrame.btn_SaveClick(Sender: TObject);
+var
+  xQuery: string;
+  xDalej: boolean;
+  xDifrence: Double;
+  xTimeOut: integer;
+  xAlertCurr: Double;
+begin
+  inherited;
+  xDalej := true;
+
+  PgQuery_Execute.Connection.StartTransaction;
+  xQuery := 'Update tbl_parametres set ParametrValue=' +
+    QuotedStr(cxTimeEdit_GamingDate.text) + ' where ParametrName=' +
+    QuotedStr(cValueName_GamingDay);
+
+  if PgQuery_Execute.Active then
+  begin
+    PgQuery_Execute.Close;
+  end;
+  PgQuery_Execute.SQL.Clear();
+  PgQuery_Execute.SQL.Add(xQuery);
+  try
+    PgQuery_Execute.Execute;
+  except
+    xDalej := false;
+  end;
+
+  if PgQuery_Execute.Active then
+  begin
+    PgQuery_Execute.Close;
+  end;
+
+  xDifrence := 0;
+  try
+    xDifrence := DataBaseStrToFloat
+      (VarToStr(cxCurrencyEdit_Difrence.EditValue));
+  except
+    xDifrence := 0;
+  end;
+  xTimeOut := 0;
+  try
+    xTimeOut := StrToInt(VarToStr(cxCurrencyEdit_timeout.EditValue));
+  except
+    xTimeOut := 0;
+  end;
+
+  try
+    xAlertCurr := DataBaseStrToFloat(VarToStr(cxCurrencyRateAlert.EditValue));
+  except
+    xAlertCurr := 0;
+  end;
+
+  try
+    DefaultCurrency :=
+      StrInt(VarToStr(cxDBLookupComboBox_DefaultCurrency.EditValue));
+  except
+    DefaultCurrency := 0;
+  end;
+
+  AlertExchangeRate := xAlertCurr;
+  Difference := xDifrence;
+
+  AutomaticImport := CheckBox_Import.Checked;
+  AutomaticTimeOut := xTimeOut;
+  AidWorkStation:= vartostr(cxDBLookupComboBox_Workstation.EditValue);
+
+  PgQuery_Execute.SQL.Clear();
+  xQuery := 'Update tbl_parametres set idTransaction=' +
+    StringToDataBAse(VarToStr(cxDBLookupComboBox_DefalutTransactions.EditValue))
+    + ',' + ' idDropTransaction =' + StringToDataBAse
+    (VarToStr(cxDBLookupComboBox_TableDropTransaction.EditValue)) + ',' +
+    ' idFillTransaction =' + StringToDataBAse
+    (VarToStr(cxDBLookupComboBox_TableFillTransaction.EditValue)) + ',' +
+    ' idCreditTransaction=' + StringToDataBAse
+    (VarToStr(cxDBLookupComboBox_TableCreditTransaction.EditValue)) + ',' +
+    ' idTitoTransaction=' + StringToDataBAse
+    (VarToStr(cxDBLookupComboBox_TITO.EditValue)) + ',' +
+    ' idTitoTransactionHandpays=' + StringToDataBAse
+    (VarToStr(cxDBLookupComboBox_TITO_Handpays.EditValue)) + ',' +
+    ' idTitoTransactionTickets=' + StringToDataBAse
+    (VarToStr(cxDBLookupComboBox_TITO_Tickets.EditValue)) + ',' +
+    ' Diffrence=' + FloatStrDataBase(xDifrence) + ',' + ' Import=' +
+    IntToStr(integer(CheckBox_Import.Checked)) + ',' + ' TimeOut=' +
+    IntToStr(xTimeOut) + ',' + ' AlertCurr=' + FloatStrDataBase(xAlertCurr) +
+    ',' + ' id_currency= ' +
+    (VarToStr(cxDBLookupComboBox_DefaultCurrency.EditValue))+','+
+    ' idWorkStation=' +   (VarToStr(cxDBLookupComboBox_Workstation.EditValue)) ;
+
+
+  PgQuery_Execute.SQL.Add(xQuery);
+  try
+    PgQuery_Execute.Execute;
+  except
+    xDalej := false;
+  end;
+  if xDalej then
+  begin
+    PgQuery_Execute.Connection.Commit;
+  end
+  else
+  begin
+    PgQuery_Execute.Connection.Rollback;
+  end;
+
+  SendMainMessage('close|current');
+
+end;
+
+// ##############################################################################
+
+constructor TSystemParametersFrame.Create(AOwner: TComponent);
+var
+  xQuery: string;
+  xdataSet: TResultHandle;
+begin
+  inherited;
+  xQuery := 'Select ParametrValue from  tbl_parametres ' +
+    ' where ParametrName=' + QuotedStr(cValueName_GamingDay);
+  if PgQuery_Execute.Active then
+    PgQuery_Execute.Close;
+  PgQuery_Execute.SQL.Clear();
+  PgQuery_Execute.SQL.Add(xQuery);
+  PgQuery_Execute.Open;
+  if PgQuery_Execute.RecordCount > 0 then
+  begin
+    try
+      cxTimeEdit_GamingDate.text := PgQuery_Execute.FieldByName
+        ('ParametrValue').AsString;
+    except
+      cxTimeEdit_GamingDate.text := EmptyStr;
+    end;
+  end;
+
+  FListCurrency := TResultHandle.Create;
+  FListCurrency.ClearResult;
+  FListCurrency.Add(' Select id, symbol from tbl_currencies');
+  cxDBLookupComboBox_DefaultCurrency.Properties.ListSource :=
+    FListCurrency.DataSource;
+  cxDBLookupComboBox_DefaultCurrency.Properties.ListFieldNames := 'symbol';
+  cxDBLookupComboBox_DefaultCurrency.Properties.KeyFieldNames := 'id';
+  FListCurrency.InvokeSQL;
+
+  FListTransactions := TResultHandle.Create;
+  FListTransactions.ClearResult;
+  FListTransactions.Add('Select id, name from tbl_transactions order by name');
+  cxDBLookupComboBox_DefalutTransactions.Properties.ListSource :=
+    FListTransactions.DataSource;
+  cxDBLookupComboBox_TableDropTransaction.Properties.ListSource :=
+    FListTransactions.DataSource;
+  cxDBLookupComboBox_TableFillTransaction.Properties.ListSource :=
+    FListTransactions.DataSource;
+  cxDBLookupComboBox_TableCreditTransaction.Properties.ListSource :=
+    FListTransactions.DataSource;
+
+  FListMultipleTransactions:= TResultHandle.Create;
+  FListMultipleTransactions.ClearResult;
+  FListMultipleTransactions.Add('Select id, name from tbl_multiple_transactions order by name');
+  FListMultipleTransactions.InvokeSQL;
+  cxDBLookupComboBox_TITO.Properties.ListSource :=
+    FListMultipleTransactions.DataSource;
+
+  FListWorkStation:= TResultHandle.Create;
+  FListWorkStation.ClearResult;
+  FListWorkStation.Add('Select id, name from tbl_workstations order by name');
+  cxDBLookupComboBox_Workstation.Properties.ListSource:=
+  FListWorkStation.DataSource;
+
+  cxDBLookupComboBox_DefalutTransactions.Properties.ListFieldNames := 'name';
+  cxDBLookupComboBox_DefalutTransactions.Properties.KeyFieldNames := 'id';
+  cxDBLookupComboBox_TableDropTransaction.Properties.ListFieldNames := 'name';
+  cxDBLookupComboBox_TableDropTransaction.Properties.KeyFieldNames := 'id';
+  cxDBLookupComboBox_TableFillTransaction.Properties.ListFieldNames := 'name';
+  cxDBLookupComboBox_TableFillTransaction.Properties.KeyFieldNames := 'id';
+  cxDBLookupComboBox_TableCreditTransaction.Properties.ListFieldNames := 'name';
+  cxDBLookupComboBox_TableCreditTransaction.Properties.KeyFieldNames := 'id';
+  cxDBLookupComboBox_TITO.Properties.ListFieldNames := 'name';
+  cxDBLookupComboBox_TITO.Properties.KeyFieldNames := 'id';
+  cxDBLookupComboBox_TITO_Handpays.Properties.ListFieldNames := 'name';
+  cxDBLookupComboBox_TITO_Handpays.Properties.KeyFieldNames := 'id';
+  cxDBLookupComboBox_TITO_Tickets.Properties.ListFieldNames := 'name';
+  cxDBLookupComboBox_TITO_Tickets.Properties.KeyFieldNames := 'id';
+  cxDBLookupComboBox_Workstation.Properties.ListFieldNames := 'name';
+  cxDBLookupComboBox_Workstation.Properties.KeyFieldNames := 'id';
+  FListWorkStation.InvokeSQL;
+
+  FListTransactions.InvokeSQL;
+  cxDBLookupComboBox_DefalutTransactions.ItemIndex := -1;
+
+  FDefalultTransactions := TResultHandle.Create;
+  FDefalultTransactions.ClearResult;
+  FDefalultTransactions.Add('Select idTransaction as id from tbl_parametres');
+  cxDBLookupComboBox_DefalutTransactions.DataBinding.DataSource :=
+    FDefalultTransactions.DataSource;
+  cxDBLookupComboBox_DefalutTransactions.DataBinding.DataField := 'id';
+  FDefalultTransactions.InvokeSQL;
+
+  // FListDropTableTransactions
+  FListDropTableTransactions := TResultHandle.Create;
+  FListDropTableTransactions.ClearResult;
+  FListDropTableTransactions.Add
+    ('Select idDropTransaction  as id from tbl_parametres');
+  cxDBLookupComboBox_TableDropTransaction.DataBinding.DataSource :=
+    FListDropTableTransactions.DataSource;
+  cxDBLookupComboBox_TableDropTransaction.DataBinding.DataField := 'id';
+  FListDropTableTransactions.InvokeSQL;
+
+  // FListFillTableTransactions
+  FListFillTableTransactions := TResultHandle.Create;
+  FListFillTableTransactions.ClearResult;
+  FListFillTableTransactions.Add
+    ('Select idfillTransaction  as id from tbl_parametres');
+  cxDBLookupComboBox_TableFillTransaction.DataBinding.DataSource :=
+    FListFillTableTransactions.DataSource;
+  cxDBLookupComboBox_TableFillTransaction.DataBinding.DataField := 'id';
+  FListFillTableTransactions.InvokeSQL;
+  // FlistCreditTableTransactions
+
+  FlistCreditTableTransactions := TResultHandle.Create;
+  FlistCreditTableTransactions.ClearResult;
+  FlistCreditTableTransactions.Add
+    ('Select idcreditTransaction  as id from tbl_parametres');
+  cxDBLookupComboBox_TableCreditTransaction.DataBinding.DataSource :=
+    FlistCreditTableTransactions.DataSource;
+  cxDBLookupComboBox_TableCreditTransaction.DataBinding.DataField := 'id';
+  FlistCreditTableTransactions.InvokeSQL;
+
+  FListDefaultCurrency := TResultHandle.Create;
+  FListDefaultCurrency.ClearResult;
+  FListDefaultCurrency.Add('select id_currency as id from tbl_parametres');
+  cxDBLookupComboBox_DefaultCurrency.DataBinding.DataSource :=
+    FListDefaultCurrency.DataSource;
+  cxDBLookupComboBox_DefaultCurrency.DataBinding.DataField := 'id';
+  FListDefaultCurrency.InvokeSQL;
+
+  FListTITO := TResultHandle.Create;
+  FListTITO.ClearResult;
+  FListTITO.Add('select idTitoTransaction as id from tbl_parametres');
+  cxDBLookupComboBox_TITO.DataBinding.DataSource :=
+    FListTITO.DataSource;
+  cxDBLookupComboBox_TITO.DataBinding.DataField := 'id';
+  FListTITO.InvokeSQL;
+
+  FListTITOHandpays := TResultHandle.Create;
+  FListTITOHandpays.ClearResult;
+  FListTITOHandpays.Add('select idTitoTransactionHandpays as id from tbl_parametres');
+  cxDBLookupComboBox_TITO_Handpays.DataBinding.DataSource :=
+    FListTITOHandpays.DataSource;
+  cxDBLookupComboBox_TITO_Handpays.DataBinding.DataField := 'id';
+  FListTITOHandpays.InvokeSQL;
+
+  FListTITOTickets := TResultHandle.Create;
+  FListTITOTickets.ClearResult;
+  FListTITOTickets.Add('select idTitoTransactionTickets as id from tbl_parametres');
+  cxDBLookupComboBox_TITO_Tickets.DataBinding.DataSource :=
+    FListTITOTickets.DataSource;
+  cxDBLookupComboBox_TITO_Tickets.DataBinding.DataField := 'id';
+  FListTITOTickets.InvokeSQL;
+
+  FDefaultWorkstation:= TResultHandle.Create;
+  FDefaultWorkstation.ClearResult;
+  FDefaultWorkstation.Add('select idWorkStation as id from tbl_parametres');
+  cxDBLookupComboBox_Workstation.DataBinding.DataSource :=
+  FDefaultWorkstation.DataSource;
+  cxDBLookupComboBox_Workstation.DataBinding.DataField := 'id';
+  FDefaultWorkstation.InvokeSQL;
+  {
+    Diffrence
+    Import
+    TimeOut }
+  xdataSet := TResultHandle.Create;
+  xdataSet.ClearResult;
+  xdataSet.Add('Select * from tbl_parametres');
+  xdataSet.InvokeSQL;
+  if xdataSet.count > 0 then
+  begin
+    cxCurrencyEdit_Difrence.EditValue := xdataSet.query.FieldByName
+      ('Diffrence').AsString;
+    CheckBox_Import.Checked := boolean(xdataSet.query.FieldByName('import')
+      .AsInteger);
+
+    cxCurrencyEdit_timeout.EditValue := xdataSet.query.FieldByName('TimeOut')
+      .AsInteger;
+
+    cxCurrencyRateAlert.EditValue := xdataSet.query.FieldByName
+      ('AlertCurr').AsString;
+  end;
+  xdataSet.ClearResult;
+  xdataSet.Free;
+end;
+
+procedure TSystemParametersFrame.cxDBLookupComboBox_TITOPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+
+  FListMultipleSubTransactions := TResultHandle.Create;
+  FListMultipleSubTransactions.ClearResult;
+  FListMultipleSubTransactions.Add
+  (
+    'select t.id, t.name ' +
+    'from ' +
+    '  tbl_multiple_transactions_transactions as mtt ' +
+    '  left join tbl_transactions as t on mtt.id_transaction = t.id ' +
+    'where mtt.id_multiple_transaction = ' + VarToStr(cxDBLookupComboBox_TITO.EditValue) +
+    'order by name'
+  );
+  FListMultipleSubTransactions.InvokeSQL;
+
+  cxDBLookupComboBox_TITO_Handpays.Properties.ListSource :=
+    FListMultipleSubTransactions.DataSource;
+
+  cxDBLookupComboBox_TITO_Tickets.Properties.ListSource :=
+    FListMultipleSubTransactions.DataSource;
+
+end;
+
+// ##############################################################################
+
+destructor TSystemParametersFrame.Destroy;
+begin
+  FListTransactions.ClearResult;
+  FDefalultTransactions.ClearResult;
+  FListDropTableTransactions.ClearResult;
+  FListFillTableTransactions.ClearResult;
+  FlistCreditTableTransactions.ClearResult;
+  FListTITO.ClearResult;
+  FListTITOHandpays.ClearResult;
+  FListTITOTickets.ClearResult;
+  FListWorkStation.ClearResult;
+  FDefaultWorkstation.ClearResult;
+  FListMultipleTransactions.ClearResult;
+  cxDBLookupComboBox_DefalutTransactions.Properties.ListSource := nil;
+  cxDBLookupComboBox_TableDropTransaction.Properties.ListSource := nil;
+  cxDBLookupComboBox_TableFillTransaction.Properties.ListSource := nil;
+  cxDBLookupComboBox_TableCreditTransaction.Properties.ListSource := nil;
+  cxDBLookupComboBox_TITO.Properties.ListSource := nil;
+  cxDBLookupComboBox_TITO_Handpays.Properties.ListSource := nil;
+  cxDBLookupComboBox_TITO_Tickets.Properties.ListSource := nil;
+  cxDBLookupComboBox_Workstation.Properties.ListSource := nil;
+  FreeAndNil(FListTransactions);
+  FreeAndNil(FDefalultTransactions);
+  FreeAndNil(FListDropTableTransactions);
+  FreeAndNil(FListFillTableTransactions);
+  FreeAndNil(FlistCreditTableTransactions);
+  FreeAndNil(FlistTITO);
+  FreeAndNil(FlistTITOHandpays);
+  FreeAndNil(FlistTITOTickets);
+  FreeAndNil(FListWorkStation);
+  FreeAndNil(FDefaultWorkstation);
+  freeAndNil(FListMultipleTransactions);
+  inherited;
+end;
+
+// ##############################################################################
+
+end.

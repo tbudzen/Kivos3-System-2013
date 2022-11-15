@@ -1,0 +1,2 @@
+inherited AmountChangesFrame: TAmountChangesFrame
+end

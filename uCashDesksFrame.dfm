@@ -1,0 +1,2 @@
+inherited CashDesksFrame: TCashDesksFrame
+end

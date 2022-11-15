@@ -1,0 +1,282 @@
+unit uSystem;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Forms, Dialogs, Vcl.Graphics,
+  Vcl.Controls, Vcl.StdCtrls, System.Classes, WinSock,
+  uGlobals, uFrmInformation, uFrmQuestion, uFrmMain;
+
+var
+  LogFile : TextFile;
+  bSystemLogOpened : Boolean;
+
+  procedure CloseProgram();
+
+  procedure OpenSystemLog();
+  procedure CloseSystemLog();
+  procedure SystemLog(LogMessage : WideString); overload;
+  procedure SystemLog(LogMessage : WideString; Args : array of TVarRec); overload;
+
+  procedure Information(Header : WideString; InfoMessage : WideString);
+  procedure Warning(WarningMessage : WideString);
+  function  Question(QuestionMessage : WideString) : Boolean;
+
+  procedure SendMainMessage(Msg : WideString);
+
+  function StrFloat(S : WideString) : Double;
+  function FloatStr(F : Double) : WideString;
+
+  function StrInt(S : WideString) : Integer;
+
+  function FloatStrDataBase(F : Double) : WideString;
+  function DataBaseStrToFloat(F:string):Double;
+
+  function StringToDataBAse(Astring:string;Aquoted:boolean=false):string;
+  function IntegerToDataBase(Ainteger:integer):string;
+
+  function GetGuid: string;
+
+implementation
+
+uses
+  uExceptions;
+
+function StrInt(S : WideString) : Integer;
+var
+  TmpS : WideString;
+begin
+  TmpS := S;
+  if TmpS = '' then TmpS := '0';
+  try
+    Result := StrToInt(TmpS);
+  except
+    on E : Exception do
+    begin
+      HandleException(E, 'StrInt(): Attempt to convert invalid string "' + S + '"');
+    end;
+  end;
+end;
+
+function StrFloat(S : WideString) : Double;
+var
+  TmpS : WideString;
+begin
+  TmpS := S;
+  if TmpS = '' then TmpS := '0';
+  try
+    Result := StrToFloat(TmpS, frmMain.FormatSettings);
+  except
+    on E : Exception do
+    begin
+      HandleException(E, 'StrFloat(): Attempt to convert invalid string "' + S + '"');
+    end;
+  end;
+end;
+
+function FloatStr(F : Double) : WideString;
+begin
+  Result := FloatToStrF(F, ffFixed, 15, 2, frmMain.FormatSettings);
+end;
+
+function FloatStrDataBase(F : Double) : WideString;
+begin
+  Result:= StringReplace(Format('%f', [f]), ',', '.', [rfReplaceAll])
+end;
+
+  function DataBaseStrToFloat(F:string):Double;
+  var
+   xResult : String;
+  begin
+   xResult := StringReplace(f, ',', FormatSettings.DecimalSeparator, [rfReplaceAll]);
+   xResult := StringReplace(f, '.', FormatSettings.DecimalSeparator, [rfReplaceAll]);
+   try
+   Result := StrToFloat(xResult);
+   except
+     Result := 0;
+   end;
+  end;
+
+  procedure SendMainMessage(Msg : WideString);
+  begin
+    frmMain.FrameMessage.Command := Msg;
+  end;
+
+  procedure CloseProgram();
+  begin
+    SystemLog('Application terminated.', []);
+    CloseSystemLog();
+    Application.Terminate;
+  end;
+
+  procedure OpenSystemLog();
+  begin
+    if SYSTEM_LOG_ENABLED then
+    begin
+      if not bSystemLogOpened then
+      begin
+        try
+          AssignFile(LogFile, LOG_FILE_PATH);
+          if not FileExists(LOG_FILE_PATH) then
+          begin
+            ReWrite(LogFile);
+          end
+          else
+          begin
+            ReWrite(LogFile);
+            //Append(LogFile);
+          end;
+        except
+          on E : Exception do
+          begin
+            HandleException(E, 'OpenSystemLog()');
+          end;
+        end;
+        try
+          WriteLn(LogFile, '');
+        except
+          on E : Exception do
+          begin
+            HandleException(E, 'OpenSystemLog()');
+          end;
+        end;
+        SystemLog('System log opened for write.', []);
+        bSystemLogOpened := True;
+      end;
+    end;
+  end;
+
+  procedure CloseSystemLog();
+  begin
+    if SYSTEM_LOG_ENABLED then
+    begin
+      if bSystemLogOpened then
+      begin
+        SystemLog('System log closed.', []);
+        CloseFile(LogFile);
+        bSystemLogOpened := False;
+      end;
+    end;
+  end;
+
+  procedure SystemLog(LogMessage : WideString); overload;
+  begin
+    if SYSTEM_LOG_ENABLED then
+    begin
+      try
+        WriteLn(LogFile, '[', DateTimeToStr(Now(), frmMain.FormatSettings), '] ', LogMessage);
+      except
+        on E : Exception do
+        begin
+          HandleException(E, 'SystemLog()');
+        end;
+      end;
+    end;
+  end;
+
+  procedure SystemLog(LogMessage : WideString; Args : array of TVarRec); overload;
+  var
+    FormattedLogMessage : WideString;
+  begin
+    if SYSTEM_LOG_ENABLED then
+    begin
+      FormattedLogMessage := WideFormat(LogMessage, Args);
+      try
+        WriteLn(LogFile, '[', DateTimeToStr(Now(), frmMain.FormatSettings), '] ', FormattedLogMessage);
+      except
+        on E : Exception do
+        begin
+          HandleException(E, 'SystemLog()');
+        end;
+      end;
+    end;
+  end;
+
+  procedure Information(Header : WideString; InfoMessage : WideString);
+  var
+    Pos0, Pos1, Pos2, Len : Integer;
+  begin
+    Pos0 := Pos('.', InfoMessage);
+    Pos1 := Pos('?', InfoMessage);
+    Pos2 := Pos('!', InfoMessage);
+    Len := Length(InfoMessage);
+    if (Pos0 <> Len) and (Pos1 <> Len) and (Pos2 <> Len)
+    then
+    begin
+      InfoMessage := InfoMessage + '.';
+    end;
+    frmInformation.Header := Header;
+    frmInformation.InfoMessage := InfoMessage;
+    frmInformation.ShowModal();
+  end;
+
+  procedure Warning(WarningMessage : WideString);
+  begin
+    Information('Warning', WarningMessage);
+  end;
+
+  function Question(QuestionMessage : WideString) : Boolean;
+  var
+    Pos0, Pos1, Pos2, Len : Integer;
+  begin
+    Pos0 := Pos('.', QuestionMessage);
+    Pos1 := Pos('?', QuestionMessage);
+    Pos2 := Pos('!', QuestionMessage);
+    Len := Length(QuestionMessage);
+    if (Pos0 <> Len) and (Pos1 <> Len) and (Pos2 <> Len)
+    then
+    begin
+      QuestionMessage := QuestionMessage + '.';
+    end;
+    frmQuestion.Label1.Caption := QuestionMessage;
+    frmQuestion.ShowModal();
+    Result := (frmQuestion.ModalResult = mrYes);
+  end;
+
+
+  function StringToDataBAse(Astring:string;Aquoted:boolean=false):string;
+  begin
+    if Trim(Astring) = '' then
+    begin
+      Result := 'NULL';
+    end
+    else
+    begin
+     if Aquoted then begin
+
+      Result := QuotedStr(Astring);
+     end else begin
+      Result := Astring;
+     end;
+    end;
+  end;
+
+ function IntegerToDataBase(Ainteger:integer):string;
+ begin
+ try
+   if Ainteger <> cKeyNILL then
+   begin
+     Result := IntToStr(Ainteger);
+   end
+   else
+   begin
+     Result := 'NULL';
+   end;
+ except
+   Result := 'NULL';
+ end;
+
+ end;
+
+function GetGuid(): string;
+var
+  Guid: TGUID;
+begin
+  Result := '';
+  if CreateGUID(Guid) = S_OK then
+  begin
+    Result := GUIDToString(Guid);
+  end;
+end;
+
+end.

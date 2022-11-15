@@ -1,0 +1,636 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{00A46738-7644-4C8A-ACD8-5D1518264DCE}</ProjectGuid>
+			<ProjectVersion>13.4</ProjectVersion>
+			<FrameworkType>VCL</FrameworkType>
+			<MainSource>Kivos30.dpr</MainSource>
+			<Base>True</Base>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<TargetedPlatforms>3</TargetedPlatforms>
+			<AppType>Application</AppType>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+			<Base_Win64>true</Base_Win64>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+			<Base_Win32>true</Base_Win32>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win64)'!=''">
+			<Cfg_1_Win64>true</Cfg_1_Win64>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+			<Cfg_1_Win32>true</Cfg_1_Win32>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+			<Cfg_2_Win32>true</Cfg_2_Win32>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_PentiumSafeDivide>true</DCC_PentiumSafeDivide>
+			<VerInfo_Debug>true</VerInfo_Debug>
+			<DCC_RunTimeTypeInfo>true</DCC_RunTimeTypeInfo>
+			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
+			<DCC_RangeChecking>true</DCC_RangeChecking>
+			<Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
+			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_MapFile>3</DCC_MapFile>
+			<VerInfo_MinorVer>1</VerInfo_MinorVer>
+			<VerInfo_MajorVer>0</VerInfo_MajorVer>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
+			<ImageDebugInfo>true</ImageDebugInfo>
+			<DCC_UsePackage>rtl;dbrtl;IndySystem;DbxClientDriver;bindcomp;inetdb;DBXInterBaseDriver;DataSnapCommon;xmlrtl;ibxpress;DbxCommonDriver;IndyProtocols;DBXMySQLDriver;dbxcds;bindengine;soaprtl;CustomIPTransport;dsnap;DBXInformixDriver;IndyCore;CloudService;DBXFirebirdDriver;inet;inetdbxpress;DBXSybaseASADriver;IPIndyImpl;dbexpress;DataSnapIndy10ServerTransport;$(DCC_UsePackage)</DCC_UsePackage>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=0.1.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Locale>1045</VerInfo_Locale>
+			<DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
+			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+			<DCC_E>false</DCC_E>
+			<DCC_N>false</DCC_N>
+			<DCC_S>false</DCC_S>
+			<DCC_F>false</DCC_F>
+			<DCC_K>false</DCC_K>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<DCC_UsePackage>TeeDB;vclib;Tee;DBXOdbcDriver;DBXSybaseASEDriver;vclimg;TeeUI;vclactnband;vcldb;vcldsnap;bindcompvcl;vclie;vcltouch;DBXDb2Driver;websnap;vclribbon;VclSmp;vcl;DataSnapConnectors;DBXMSSQLDriver;dsnapcon;vclx;webdsnap;adortl;$(DCC_UsePackage)</DCC_UsePackage>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_UsePackage>Rave100VCL;vclib;inetdbbde;vclimg;TeeUI;vclactnband;vcldb;vcldsnap;bindcompvcl;vclie;vcltouch;websnap;VclSmp;vcl;CodeSiteExpressPkg;dsnapcon;vclx;webdsnap;bdertl;adortl;crcontrols160;$(DCC_UsePackage)</DCC_UsePackage>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<Icon_MainIcon>Kivos30_Icon5.ico</Icon_MainIcon>
+			<UsePackages>true</UsePackages>
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+			<DCC_Optimize>false</DCC_Optimize>
+			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
+			<DCC_RemoteDebug>true</DCC_RemoteDebug>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+			<UsePackages>false</UsePackages>
+			<Icon_MainIcon>Kivos30_Icon4.ico</Icon_MainIcon>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<VerInfo_Debug>false</VerInfo_Debug>
+			<DCC_Define>Relase;$(DCC_Define)</DCC_Define>
+			<VerInfo_MajorVer>3</VerInfo_MajorVer>
+			<VerInfo_Release>1</VerInfo_Release>
+			<DCC_UsePackage>frxClass;$(DCC_UsePackage)</DCC_UsePackage>
+			<UsePackages>false</UsePackages>
+			<Manifest_File>None</Manifest_File>
+			<VerInfo_MinorVer>0</VerInfo_MinorVer>
+			<DCC_RunTimeTypeInfo>false</DCC_RunTimeTypeInfo>
+			<Icon_MainIcon>Kivos30_Icon3.ico</Icon_MainIcon>
+			<VerInfo_Build>1</VerInfo_Build>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.0.1.1;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=0.1.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<DCC_DebugInfoInExe>false</DCC_DebugInfoInExe>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.1.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_MajorVer>3</VerInfo_MajorVer>
+			<DCC_MapFile>0</DCC_MapFile>
+			<BCC_SourceDebuggingOn>true</BCC_SourceDebuggingOn>
+			<BCC_DebugLineNumbers>true</BCC_DebugLineNumbers>
+			<ILINK_FullDebugInfo>true</ILINK_FullDebugInfo>
+			<Manifest_File>None</Manifest_File>
+			<DCC_UsePackage>dxCoreRS16;cxLibraryRS16;cxDataRS16;dxThemeRS16;cxEditorsRS16;cxExportRS16;dxComnRS16;dxDockingRS16;dxTabbedMDIRS16;cxGridRS16;cxPageControldxBarPopupMenuRS16;cxPageControlRS16;cxTreeListdxBarPopupMenuRS16;cxTreeListRS16;dxLayoutControlRS16;cxVerticalGridRS16;cxSpreadSheetRS16;dxGDIPlusRS16;dxNavBarAdvancedCustomizeFormRS16;dxNavBarRS16;dxPSCoreRS16;dxPScxCommonRS16;dxPScxExtCommonRS16;dxPScxGridLnkRS16;dxPScxPCProdRS16;dxPScxPivotGridLnkRS16;dxPScxSchedulerLnkRS16;dxPScxSSLnkRS16;dxPScxTLLnkRS16;dxPScxVGridLnkRS16;dxPSdxDBOCLnkRS16;dxPSdxDBTVLnkRS16;dxPSdxFCLnkRS16;dxPSdxLCLnkRS16;dxPSdxOCLnkRS16;dxPSLnksRS16;dxPSPrVwAdvRS16;dxPSPrVwRibbonRS16;dxmdsRS16;dxdbtrRS16;dxtrmdRS16;dxDBOrRS16;dxOrgChartAdvancedCustomizeFormRS16;dxOrgCRS16;dxFlowChartRS16;cxPivotGridChartRS16;cxPivotGridOLAPRS16;cxPivotGridRS16;dxSpellCheckerRS16;dxSkinsCoreRS16;dxSkinscxPCPainterRS16;dxSkinscxSchedulerPainterRS16;dxSkinsdxBarPainterRS16;dxSkinsdxBarSkinnedCustomizationFormRS16;dxSkinsdxDLPainterRS16;dxSkinsdxNavBarPainterRS16;dxSkinsdxRibbonPainterRS16;dxSkinBlackRS16;dxSkinBlueprintRS16;dxSkinBlueRS16;dxSkinCaramelRS16;dxSkinCoffeeRS16;dxSkinDarkRoomRS16;dxSkinDarkSideRS16;dxSkinDevExpressDarkStyleRS16;dxSkinDevExpressStyleRS16;dxSkinFoggyRS16;dxSkinGlassOceansRS16;dxSkinHighContrastRS16;dxSkiniMaginaryRS16;dxSkinLilianRS16;dxSkinLiquidSkyRS16;dxSkinLondonLiquidSkyRS16;dxSkinMcSkinRS16;dxSkinMoneyTwinsRS16;dxSkinOffice2007BlackRS16;dxSkinOffice2007BlueRS16;dxSkinOffice2007GreenRS16;dxSkinOffice2007PinkRS16;dxSkinOffice2007SilverRS16;dxSkinOffice2010BlackRS16;dxSkinOffice2010BlueRS16;dxSkinOffice2010SilverRS16;dxSkinPumpkinRS16;dxSkinSevenClassicRS16;dxSkinSevenRS16;dxSkinSharpPlusRS16;dxSkinSharpRS16;dxSkinSilverRS16;dxSkinSpringTimeRS16;dxSkinStardustRS16;dxSkinSummer2008RS16;dxSkinTheAsphaltWorldRS16;dxSkinValentineRS16;dxSkinVS2010RS16;dxSkinWhiteprintRS16;dxSkinXmas2008BlueRS16;$(DCC_UsePackage)</DCC_UsePackage>
+			<Icon_MainIcon>Kivos30_Icon2.ico</Icon_MainIcon>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="$(MainSource)">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="uFrmMain.pas">
+				<Form>open</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="uStrings.pas"/>
+			<DCCReference Include="uGlobals.pas"/>
+			<DCCReference Include="uLocale.pas"/>
+			<DCCReference Include="uPermissions.pas"/>
+			<DCCReference Include="uDatabase.pas"/>
+			<DCCReference Include="uExcelBridge.pas"/>
+			<DCCReference Include="uNetworking.pas"/>
+			<DCCReference Include="uFrmDatabase.pas">
+				<Form>frmDatabase</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="uFinancial.pas"/>
+			<DCCReference Include="uDataValidation.pas"/>
+			<DCCReference Include="uExceptions.pas"/>
+			<DCCReference Include="uConfiguration.pas"/>
+			<DCCReference Include="uRegistry.pas"/>
+			<DCCReference Include="uFrmUserLogin.pas">
+				<Form>frmUserLogin</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="uDictionary.pas"/>
+			<DCCReference Include="uEncryption.pas"/>
+			<DCCReference Include="uSystem.pas"/>
+			<DCCReference Include="uFrmException.pas">
+				<Form>frmException</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="uFrmInformation.pas">
+				<Form>frmInformation</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="uFrmQuestion.pas">
+				<Form>frmQuestion</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="uBaseFrame.pas">
+				<Form>BaseFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfGroupsFrame.pas">
+				<Form>ListOfGroupsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfUsersFrame.pas">
+				<Form>ListOfUsersFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfGroupsPermissionsObjectsFrame.pas">
+				<Form>ListOfGroupsPermissionsObjectsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfAccountsFrame.pas">
+				<Form>ListOfAccountsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uSystemParametersFrame.pas">
+				<Form>SystemParametersFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uReportsFrame.pas">
+				<Form>ReportsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddUserFrame.pas">
+				<Form>AddUserFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddGroupFrame.pas">
+				<Form>AddGroupFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uFrameManagerThread.pas"/>
+			<DCCReference Include="uListOfCashDeskUsersFrame.pas">
+				<Form>ListOfCashDeskUsersFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddUserToCashDeskFrame.pas">
+				<Form>AddUserToCashDeskFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddChipBalanceFrame.pas">
+				<Form>AddChipBalanceFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfCashDesksFrame.pas">
+				<Form>ListOfCashDesksFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfDifferenceCategoriesFrame.pas">
+				<Form>ListOfDifferenceCategoriesFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddDifferenceCategoryFrame.pas">
+				<Form>AddDifferenceCategoryFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfValuesFrame.pas">
+				<Form>ListOfValuesFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddValueFrame.pas">
+				<Form>AddValueFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfCategoriesFrame.pas">
+				<Form>ListOfCategoriesFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddCategoryFrame.pas">
+				<Form>AddCategoryFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfUnitsFrame.pas">
+				<Form>ListOfUnitsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddUnitFrame.pas">
+				<Form>AddUnitFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfWorkstationsFrame.pas">
+				<Form>ListOfWorkstationsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddWorkstationFrame.pas">
+				<Form>AddWorkstationFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddWorkstationToCashDeskFrame.pas">
+				<Form>AddWorkstationToCashDeskFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfCurrenciesFrame.pas">
+				<Form>ListOfCurrenciesFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfCurrenciesExchangeRatesFrame.pas">
+				<Form>ListOfCurrenciesExchangeRatesFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddCurrencyFrame.pas">
+				<Form>AddCurrencyFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddCurrencyExchangeRateFrame.pas">
+				<Form>AddCurrencyExchangeRateFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfCashDeskWorkstationsFrame.pas">
+				<Form>ListOfCashDeskWorkstationsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddAccountFrame.pas">
+				<Form>AddAccountFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddCashDeskFrame.pas">
+				<Form>AddCashDeskFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddGroupPermissionObjectFrame.pas">
+				<Form>AddGroupPermissionObjectFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfPermissionsFrame.pas">
+				<Form>ListOfPermissionsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfUserGroupsFrame.pas">
+				<Form>ListOfUserGroupsFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfObjectsFrame.pas">
+				<Form>ListOfObjectsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddUserGroupFrame.pas">
+				<Form>AddUserGroupFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddTransactionFrame.pas">
+				<Form>AddTransactionFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfMultipleTransactionsFrame.pas">
+				<Form>ListOfMultipleTransactionsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddMultipleTransactionFrame.pas">
+				<Form>AddMultipleTransactionFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfShiftsFrame.pas">
+				<Form>ListOfShiftsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uAddShiftFrame.pas">
+				<Form>AddShiftFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uFrmCashierRelogin.pas">
+				<Form>frmCashierRelogin</Form>
+			</DCCReference>
+			<DCCReference Include="Statistic\UListofStatisticCategoryFrame.pas">
+				<Form>ListofStatisticCategoryFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Statistic\UmodifyEntryStatistic.pas">
+				<Form>uModifyEntryStatisticFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Statistic\uStListOfcategory.pas">
+				<Form>StListOfCategory</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uShiftsExplanation.pas">
+				<Form>ShiftsExplanation</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="gnugettext.pas"/>
+			<DCCReference Include="UListOfSpecialBooks.pas">
+				<Form>ListOfSpecialBooks</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="ulistofTransactionsFrame.pas">
+				<Form>ListOfTransactionsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uPrintManager.pas">
+				<Form>PrintManager</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Statistic\uImportTransactions.pas"/>
+			<DCCReference Include="Count\ChipsAmountChangesHistory.pas">
+				<Form>ChipsAmountChangesHistoryForm</Form>
+			</DCCReference>
+			<DCCReference Include="Reports\uReportPreview.pas">
+				<Form>ReportPreview</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Statistic\uFrameHelper.pas"/>
+			<DCCReference Include="uListOfTitoForm.pas">
+				<Form>ListOfTitoForm</Form>
+			</DCCReference>
+			<DCCReference Include="Reports\uReportShiftPreview.pas">
+				<Form>ReportShiftPreview</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Reports\uReportTicket.pas">
+				<Form>ReportTicket</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Reports\uReportTransfer.pas">
+				<Form>ReportPreviewTransfer</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Reports\uReportBalance.pas">
+				<Form>ReportBalancePreview</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Reports\uGeneralTicket.pas">
+				<Form>GeneralTicket</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uShiftAndCountingFrame.pas">
+				<Form>ShiftAndCountingFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Reports\uReportShiftBalancePreview.pas">
+				<Form>ReportShiftBalancePreview</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Reports\uReportCurrencyFrame.pas">
+				<Form>ReportCurrency</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Reports\uReportCurrencyHistFrame.pas">
+				<Form>ReportCurrencyHistPreview</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uCdCountDropOperator.pas">
+				<Form>CdCountDropOperatorFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uCdCountFunctionsSpec.pas">
+				<Form>CdCountFunctionsSpecFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uCdCountInput.pas"/>
+			<DCCReference Include="Count\uCdCountTipsControler.pas">
+				<Form>CdCountTipsControlerFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uCdCountTipsOperator.pas">
+				<Form>CdCountTipsOperatorFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uChipsAmountChange.pas">
+				<Form>ChipsAmountChangeForm</Form>
+			</DCCReference>
+			<DCCReference Include="Count\uChipsAmuntChangesHistory.pas">
+				<Form>ChipsAmuntChangesHistoryFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uChipsBalanceConfig.pas">
+				<Form>ChipsBalanceConfigFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uChipsBalanceReport.pas">
+				<Form>ChipsBalanceReportFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uChipShiftSelect.pas">
+				<Form>ChipShiftSelectForm</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uChipsInitials.pas">
+				<Form>ChipsInitialsFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uChipsSelectShift.pas">
+				<Form>ChipsSelectShiftFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uFrmBaseDialog.pas">
+				<Form>frmBaseDialog</Form>
+			</DCCReference>
+			<DCCReference Include="uListOfCashTransactionsFrame.pas">
+				<Form>ListOfCashTransactionsFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Statistic\uExportsGrid.pas"/>
+			<DCCReference Include="ListOfOldKivosReport.pas">
+				<Form>OldKivosReport</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uListOfAmountChangesFrame.pas">
+				<Form>ListOfAmountChangesFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uCdCountDates.pas">
+				<Form>CdCountDatesFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uCdCountImput.pas">
+				<Form>CdCountImputForm</Form>
+			</DCCReference>
+			<DCCReference Include="Count\uCdCountDropControler.pas">
+				<Form>CdCountDropControlerFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uCdCountTips.pas">
+				<Form>CdCountTipsFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="Count\uChipsBalanceDaily.pas">
+				<Form>ChipsBalanceDailyFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uContinuousInfoForm.pas">
+				<Form>ContinuousInfoForm</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="Statistic\uCashShortCutManager.pas">
+				<Form>CashShortCutManager</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="uChangePasswordFrame.pas">
+				<Form>ChangePasswordFrame</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<None Include="Profiling\AQtimeModule1.aqt"/>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Delphi.Personality>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">False</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1045</VersionInfo>
+						<VersionInfo Name="CodePage">1250</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName"/>
+						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename"/>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclbindcompfmx160.bpl">Embarcadero LiveBindings Components FireMonkey</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+					</Excluded_Packages>
+					<Source>
+						<Source Name="MainSource">Kivos30.dpr</Source>
+					</Source>
+				</Delphi.Personality>
+				<Deployment/>
+				<Platforms>
+					<Platform value="Win64">True</Platform>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+				<ModelSupport>False</ModelSupport>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')" Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+	</Project>

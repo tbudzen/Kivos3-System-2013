@@ -1,0 +1,156 @@
+program Kivos30;
+
+
+
+uses
+  Windows,
+  Vcl.Forms,
+  uFrmMain in 'uFrmMain.pas' {open},
+  uStrings in 'uStrings.pas',
+  uGlobals in 'uGlobals.pas',
+  uLocale in 'uLocale.pas',
+  uPermissions in 'uPermissions.pas',
+  uDatabase in 'uDatabase.pas',
+  uExcelBridge in 'uExcelBridge.pas',
+  uNetworking in 'uNetworking.pas',
+  uFrmDatabase in 'uFrmDatabase.pas' {frmDatabase},
+  uFinancial in 'uFinancial.pas',
+  uDataValidation in 'uDataValidation.pas',
+  uExceptions in 'uExceptions.pas',
+  uConfiguration in 'uConfiguration.pas',
+  uRegistry in 'uRegistry.pas',
+  uFrmUserLogin in 'uFrmUserLogin.pas' {frmUserLogin},
+  uDictionary in 'uDictionary.pas',
+  uEncryption in 'uEncryption.pas',
+  uSystem in 'uSystem.pas',
+  uFrmException in 'uFrmException.pas' {frmException},
+  uFrmInformation in 'uFrmInformation.pas' {frmInformation},
+  uFrmQuestion in 'uFrmQuestion.pas' {frmQuestion},
+  uBaseFrame in 'uBaseFrame.pas' {BaseFrame: TFrame},
+  uListOfGroupsFrame in 'uListOfGroupsFrame.pas' {ListOfGroupsFrame: TFrame},
+  uListOfUsersFrame in 'uListOfUsersFrame.pas' {ListOfUsersFrame: TFrame},
+  uListOfGroupsPermissionsObjectsFrame in 'uListOfGroupsPermissionsObjectsFrame.pas' {ListOfGroupsPermissionsObjectsFrame: TFrame},
+  uListOfAccountsFrame in 'uListOfAccountsFrame.pas' {ListOfAccountsFrame: TFrame},
+  uSystemParametersFrame in 'uSystemParametersFrame.pas' {SystemParametersFrame: TFrame},
+  uReportsFrame in 'uReportsFrame.pas' {ReportsFrame: TFrame},
+  uAddUserFrame in 'uAddUserFrame.pas' {AddUserFrame: TFrame},
+  uAddGroupFrame in 'uAddGroupFrame.pas' {AddGroupFrame: TFrame},
+  uFrameManagerThread in 'uFrameManagerThread.pas',
+  uListOfCashDeskUsersFrame in 'uListOfCashDeskUsersFrame.pas' {ListOfCashDeskUsersFrame: TFrame},
+  uAddUserToCashDeskFrame in 'uAddUserToCashDeskFrame.pas' {AddUserToCashDeskFrame: TFrame},
+  uAddChipBalanceFrame in 'uAddChipBalanceFrame.pas' {AddChipBalanceFrame: TFrame},
+  uListOfCashDesksFrame in 'uListOfCashDesksFrame.pas' {ListOfCashDesksFrame: TFrame},
+  uListOfDifferenceCategoriesFrame in 'uListOfDifferenceCategoriesFrame.pas' {ListOfDifferenceCategoriesFrame: TFrame},
+  uAddDifferenceCategoryFrame in 'uAddDifferenceCategoryFrame.pas' {AddDifferenceCategoryFrame: TFrame},
+  uListOfValuesFrame in 'uListOfValuesFrame.pas' {ListOfValuesFrame: TFrame},
+  uAddValueFrame in 'uAddValueFrame.pas' {AddValueFrame: TFrame},
+  uListOfCategoriesFrame in 'uListOfCategoriesFrame.pas' {ListOfCategoriesFrame: TFrame},
+  uAddCategoryFrame in 'uAddCategoryFrame.pas' {AddCategoryFrame: TFrame},
+  uListOfUnitsFrame in 'uListOfUnitsFrame.pas' {ListOfUnitsFrame: TFrame},
+  uAddUnitFrame in 'uAddUnitFrame.pas' {AddUnitFrame: TFrame},
+  uListOfWorkstationsFrame in 'uListOfWorkstationsFrame.pas' {ListOfWorkstationsFrame: TFrame},
+  uAddWorkstationFrame in 'uAddWorkstationFrame.pas' {AddWorkstationFrame: TFrame},
+  uAddWorkstationToCashDeskFrame in 'uAddWorkstationToCashDeskFrame.pas' {AddWorkstationToCashDeskFrame: TFrame},
+  uListOfCurrenciesFrame in 'uListOfCurrenciesFrame.pas' {ListOfCurrenciesFrame: TFrame},
+  uListOfCurrenciesExchangeRatesFrame in 'uListOfCurrenciesExchangeRatesFrame.pas' {ListOfCurrenciesExchangeRatesFrame: TFrame},
+  uAddCurrencyFrame in 'uAddCurrencyFrame.pas' {AddCurrencyFrame: TFrame},
+  uAddCurrencyExchangeRateFrame in 'uAddCurrencyExchangeRateFrame.pas' {AddCurrencyExchangeRateFrame: TFrame},
+  uListOfCashDeskWorkstationsFrame in 'uListOfCashDeskWorkstationsFrame.pas' {ListOfCashDeskWorkstationsFrame: TFrame},
+  uAddAccountFrame in 'uAddAccountFrame.pas' {AddAccountFrame: TFrame},
+  uAddCashDeskFrame in 'uAddCashDeskFrame.pas' {AddCashDeskFrame: TFrame},
+  uAddGroupPermissionObjectFrame in 'uAddGroupPermissionObjectFrame.pas' {AddGroupPermissionObjectFrame: TFrame},
+  uListOfPermissionsFrame in 'uListOfPermissionsFrame.pas' {ListOfPermissionsFrame: TFrame},
+  uListOfUserGroupsFrame in 'uListOfUserGroupsFrame.pas' {ListOfUserGroupsFrame: TFrame},
+  uListOfObjectsFrame in 'uListOfObjectsFrame.pas' {ListOfObjectsFrame: TFrame},
+  uAddUserGroupFrame in 'uAddUserGroupFrame.pas' {AddUserGroupFrame: TFrame},
+  Vcl.Themes,
+  Vcl.Styles,
+  uAddTransactionFrame in 'uAddTransactionFrame.pas' {AddTransactionFrame: TFrame},
+  uListOfMultipleTransactionsFrame in 'uListOfMultipleTransactionsFrame.pas' {ListOfMultipleTransactionsFrame: TFrame},
+  uAddMultipleTransactionFrame in 'uAddMultipleTransactionFrame.pas' {AddMultipleTransactionFrame: TFrame},
+  uListOfShiftsFrame in 'uListOfShiftsFrame.pas' {ListOfShiftsFrame: TFrame},
+  uAddShiftFrame in 'uAddShiftFrame.pas' {AddShiftFrame: TFrame},
+  uFrmCashierRelogin in 'uFrmCashierRelogin.pas' {frmCashierRelogin},
+  UListofStatisticCategoryFrame in 'Statistic\UListofStatisticCategoryFrame.pas' {ListofStatisticCategoryFrame: TFrame},
+  UmodifyEntryStatistic in 'Statistic\UmodifyEntryStatistic.pas' {uModifyEntryStatisticFrame: TFrame},
+  uStListOfcategory in 'Statistic\uStListOfcategory.pas' {StListOfCategory: TFrame},
+  uShiftsExplanation in 'uShiftsExplanation.pas' {ShiftsExplanation: TFrame},
+  gnugettext in 'gnugettext.pas',
+  UListOfSpecialBooks in 'UListOfSpecialBooks.pas' {ListOfSpecialBooks: TFrame},
+  ulistofTransactionsFrame in 'ulistofTransactionsFrame.pas' {ListOfTransactionsFrame: TFrame},
+  uPrintManager in 'uPrintManager.pas' {PrintManager: TFrame},
+  uImportTransactions in 'Statistic\uImportTransactions.pas',
+  ChipsAmountChangesHistory in 'Count\ChipsAmountChangesHistory.pas' {ChipsAmountChangesHistoryForm},
+  uReportPreview in 'Reports\uReportPreview.pas' {ReportPreview: TFrame},
+  uFrameHelper in 'Statistic\uFrameHelper.pas',
+  uListOfTitoForm in 'uListOfTitoForm.pas' {ListOfTitoForm},
+  uReportShiftPreview in 'Reports\uReportShiftPreview.pas' {ReportShiftPreview: TFrame},
+  uReportTicket in 'Reports\uReportTicket.pas' {ReportTicket: TFrame},
+  uReportTransfer in 'Reports\uReportTransfer.pas' {ReportPreviewTransfer: TFrame},
+  uReportBalance in 'Reports\uReportBalance.pas' {ReportBalancePreview: TFrame},
+  uGeneralTicket in 'Reports\uGeneralTicket.pas' {GeneralTicket: TFrame},
+  uShiftAndCountingFrame in 'uShiftAndCountingFrame.pas' {ShiftAndCountingFrame: TFrame},
+  uReportShiftBalancePreview in 'Reports\uReportShiftBalancePreview.pas' {ReportShiftBalancePreview: TFrame},
+  uReportCurrencyFrame in 'Reports\uReportCurrencyFrame.pas' {ReportCurrency: TFrame},
+  uReportCurrencyHistFrame in 'Reports\uReportCurrencyHistFrame.pas' {ReportCurrencyHistPreview: TFrame},
+  uCdCountDropOperator in 'Count\uCdCountDropOperator.pas' {CdCountDropOperatorFrame: TFrame},
+  uCdCountFunctionsSpec in 'Count\uCdCountFunctionsSpec.pas' {CdCountFunctionsSpecFrame: TFrame},
+  uCdCountInput in 'Count\uCdCountInput.pas',
+  uCdCountTipsControler in 'Count\uCdCountTipsControler.pas' {CdCountTipsControlerFrame: TFrame},
+  uCdCountTipsOperator in 'Count\uCdCountTipsOperator.pas' {CdCountTipsOperatorFrame: TFrame},
+  uChipsAmountChange in 'Count\uChipsAmountChange.pas' {ChipsAmountChangeForm},
+  uChipsAmuntChangesHistory in 'Count\uChipsAmuntChangesHistory.pas' {ChipsAmuntChangesHistoryFrame: TFrame},
+  uChipsBalanceConfig in 'Count\uChipsBalanceConfig.pas' {ChipsBalanceConfigFrame: TFrame},
+  uChipsBalanceReport in 'Count\uChipsBalanceReport.pas' {ChipsBalanceReportFrame: TFrame},
+  uChipShiftSelect in 'Count\uChipShiftSelect.pas' {ChipShiftSelectForm: TFrame},
+  uChipsInitials in 'Count\uChipsInitials.pas' {ChipsInitialsFrame: TFrame},
+  uChipsSelectShift in 'Count\uChipsSelectShift.pas' {ChipsSelectShiftFrame: TFrame},
+  uFrmBaseDialog in 'Count\uFrmBaseDialog.pas' {frmBaseDialog},
+  uListOfCashTransactionsFrame in 'uListOfCashTransactionsFrame.pas' {ListOfCashTransactionsFrame: TFrame},
+  uExportsGrid in 'Statistic\uExportsGrid.pas',
+  ListOfOldKivosReport in 'ListOfOldKivosReport.pas' {OldKivosReport: TFrame},
+  uListOfAmountChangesFrame in 'uListOfAmountChangesFrame.pas' {ListOfAmountChangesFrame: TFrame},
+  uCdCountDates in 'Count\uCdCountDates.pas' {CdCountDatesFrame: TFrame},
+  uCdCountImput in 'Count\uCdCountImput.pas' {CdCountImputForm},
+  uCdCountDropControler in 'Count\uCdCountDropControler.pas' {CdCountDropControlerFrame: TFrame},
+  uCdCountTips in 'Count\uCdCountTips.pas' {CdCountTipsFrame: TFrame},
+  uChipsBalanceDaily in 'Count\uChipsBalanceDaily.pas' {ChipsBalanceDailyFrame: TFrame},
+  uContinuousInfoForm in 'uContinuousInfoForm.pas' {ContinuousInfoForm},
+  uCashShortCutManager in 'Statistic\uCashShortCutManager.pas' {CashShortCutManager: TFrame},
+  uFrmChangePassword in 'uFrmChangePassword.pas' {frmChangePassword},
+  uChangePasswordFrame in 'uChangePasswordFrame.pas' {ChangePasswordFrame: TFrame};
+
+var
+  Mutex: THandle;
+
+begin
+  UseLanguage('en');
+  Mutex := CreateMutex(nil, True, 'Kivos30');
+  if (Mutex = 0) or (GetLastError <> 0) then
+  begin
+    Exit;
+  end;
+  Application.Initialize;
+  InitializeApplicationTitle;
+  Application.MainFormOnTaskbar := True;
+  bSystemLogOpened := False;
+  Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TfrmDatabase, frmDatabase);
+  Application.CreateForm(TfrmUserLogin, frmUserLogin);
+  Application.CreateForm(TfrmException, frmException);
+  Application.CreateForm(TfrmInformation, frmInformation);
+  Application.CreateForm(TfrmQuestion, frmQuestion);
+  Application.CreateForm(TfrmChangePassword, frmChangePassword);
+  frmMain.CurrentUserName := '';
+  frmMain.CurrentPassword := '';
+  frmMain.CurrentDatabaseName := '';
+  frmMain.CurrentDBUserName := '';
+  frmMain.FrameMessage.Command := '';
+  frmMain.DoMainLogin();
+  frmMain.ReadConfigurationFromDataBase;
+  Application.Run;
+  if (Mutex <> 0) then
+  begin
+    CloseHandle(Mutex);
+  end;
+end.

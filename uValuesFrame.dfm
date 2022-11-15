@@ -1,0 +1,2 @@
+inherited ValuesFrame: TValuesFrame
+end

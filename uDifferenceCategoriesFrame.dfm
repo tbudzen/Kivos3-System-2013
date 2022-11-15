@@ -1,0 +1,2 @@
+inherited DifferenceCategoriesFrame: TDifferenceCategoriesFrame
+end

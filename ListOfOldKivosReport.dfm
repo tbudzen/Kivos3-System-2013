@@ -1,0 +1,1062 @@
+inherited OldKivosReport: TOldKivosReport
+  Width = 1179
+  Height = 664
+  ExplicitWidth = 1179
+  ExplicitHeight = 664
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1179
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 0
+    object cxTimeEdit_To: TcxTimeEdit
+      Left = 396
+      Top = 14
+      EditValue = 0d
+      TabOrder = 0
+      Width = 138
+    end
+    object cxButton_refresh: TcxButton
+      Left = 543
+      Top = 11
+      Width = 75
+      Height = 25
+      Caption = 'Refresh'
+      TabOrder = 1
+      OnClick = cxButton_refreshClick
+    end
+    object Panel2: TPanel
+      Left = 0
+      Top = 0
+      Width = 263
+      Height = 41
+      Align = alLeft
+      BevelOuter = bvNone
+      TabOrder = 2
+      OnExit = Panel2Exit
+      object cxDateEdit_from: TcxDateEdit
+        Left = 7
+        Top = 14
+        EditValue = 40909d
+        Properties.DateButtons = [btnClear, btnNow, btnToday]
+        Properties.DateOnError = deToday
+        Properties.ImmediatePost = True
+        Properties.InputKind = ikRegExpr
+        Properties.MinDate = 40909.000000000000000000
+        TabOrder = 0
+        Width = 121
+      end
+      object cxTimeEdit_From: TcxTimeEdit
+        Left = 136
+        Top = 14
+        EditValue = 0d
+        TabOrder = 1
+        Width = 121
+      end
+    end
+    object cxDateEdit_To: TcxDateEdit
+      Left = 269
+      Top = 14
+      EditValue = 40909d
+      Properties.DateButtons = [btnClear, btnNow, btnToday]
+      Properties.DateOnError = deToday
+      Properties.ImmediatePost = True
+      Properties.InputKind = ikRegExpr
+      Properties.MinDate = 40909.000000000000000000
+      TabOrder = 3
+      Width = 121
+    end
+  end
+  object ScrollBox1: TScrollBox
+    Left = 0
+    Top = 41
+    Width = 1179
+    Height = 623
+    Align = alClient
+    TabOrder = 1
+    object PageControl1: TPageControl
+      Left = 0
+      Top = 0
+      Width = 1175
+      Height = 619
+      ActivePage = TabSheet_Shifts
+      Align = alClient
+      TabOrder = 0
+      object TabSheet_Pivot: TTabSheet
+        Caption = 'All'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
+        object cxDBPivotGrid1: TcxDBPivotGrid
+          Left = 0
+          Top = 0
+          Width = 1167
+          Height = 505
+          Align = alTop
+          DataSource = PgDataSource1
+          Groups = <>
+          TabOrder = 0
+          object cxDBPivotGrid1Field1: TcxDBPivotGridField
+            AreaIndex = 0
+            IsCaptionAssigned = True
+            Caption = 'Caisse'
+            DataBinding.FieldName = 'cd_name'
+            Visible = True
+            UniqueName = 'Caisse'
+          end
+          object cxDBPivotGrid1Field2: TcxDBPivotGridField
+            AreaIndex = 1
+            IsCaptionAssigned = True
+            Caption = 'Trans. No'
+            DataBinding.FieldName = 'ct_number'
+            Visible = True
+            UniqueName = 'Trans. No'
+          end
+          object cxDBPivotGrid1Field3: TcxDBPivotGridField
+            AreaIndex = 2
+            IsCaptionAssigned = True
+            Caption = 'Trans.Date'
+            DataBinding.FieldName = 'datetime'
+            Visible = True
+            UniqueName = 'Trans.Date'
+          end
+          object cxDBPivotGrid1Field4: TcxDBPivotGridField
+            AreaIndex = 3
+            IsCaptionAssigned = True
+            Caption = 'Gaming Date'
+            DataBinding.FieldName = 'gaming_date'
+            Visible = True
+            UniqueName = 'Gaming Date'
+          end
+          object cxDBPivotGrid1Field5: TcxDBPivotGridField
+            AreaIndex = 4
+            IsCaptionAssigned = True
+            Caption = 'Cat. Name'
+            DataBinding.FieldName = 'category_name'
+            Visible = True
+            UniqueName = 'Cat. Name'
+          end
+          object cxDBPivotGrid1Field6: TcxDBPivotGridField
+            AreaIndex = 5
+            IsCaptionAssigned = True
+            Caption = 'User'
+            DataBinding.FieldName = 'user_name'
+            Visible = True
+            UniqueName = 'User'
+          end
+          object cxDBPivotGrid1Field7: TcxDBPivotGridField
+            AreaIndex = 6
+            IsCaptionAssigned = True
+            Caption = 'Actual Amount'
+            DataBinding.FieldName = 'actual_amount_fc'
+            Visible = True
+            UniqueName = 'Actual Amount'
+          end
+          object cxDBPivotGrid1Field8: TcxDBPivotGridField
+            AreaIndex = 7
+            IsCaptionAssigned = True
+            Caption = 'Actual Amount CHF'
+            DataBinding.FieldName = 'actual_amount'
+            Visible = True
+            UniqueName = 'Actual Amount CHF'
+          end
+          object cxDBPivotGrid1Field9: TcxDBPivotGridField
+            AreaIndex = 8
+            IsCaptionAssigned = True
+            Caption = 'Amout Expected'
+            DataBinding.FieldName = 'amount_expected_fc'
+            Visible = True
+            UniqueName = 'Amout Expected'
+          end
+          object cxDBPivotGrid1Field10: TcxDBPivotGridField
+            AreaIndex = 9
+            IsCaptionAssigned = True
+            Caption = 'Amount Expected CHF'
+            DataBinding.FieldName = 'amount_expected'
+            Visible = True
+            UniqueName = 'Amount Expected CHF'
+          end
+          object cxDBPivotGrid1Field11: TcxDBPivotGridField
+            AreaIndex = 10
+            IsCaptionAssigned = True
+            Caption = 'Difference'
+            DataBinding.FieldName = 'difference'
+            Visible = True
+            UniqueName = 'Difference'
+          end
+          object cxDBPivotGrid1Field12: TcxDBPivotGridField
+            AreaIndex = 11
+            IsCaptionAssigned = True
+            Caption = 'Currency'
+            DataBinding.FieldName = 'currency_symbol'
+            Visible = True
+            UniqueName = 'Currency'
+          end
+        end
+      end
+      object TabSheet_Transactions: TTabSheet
+        Caption = 'Transactions'
+        ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
+        object cxGrid1: TcxGrid
+          Left = 0
+          Top = 0
+          Width = 1167
+          Height = 393
+          Align = alTop
+          TabOrder = 0
+          object cxGrid1DBTableView1: TcxGridDBTableView
+            OnCellClick = cxGrid1DBTableView1CellClick
+            DataController.DataSource = PgDataSource_Trans
+            DataController.KeyFieldNames = 'id'
+            DataController.Summary.DefaultGroupSummaryItems = <
+              item
+                Kind = skCount
+                Position = spFooter
+                Column = cxGrid1DBTableView1_Ct_number
+              end
+              item
+                Kind = skCount
+                Column = cxGrid1DBTableView1_Ct_number
+              end
+              item
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBTableView1_amountOut
+              end
+              item
+                Kind = skSum
+                Column = cxGrid1DBTableView1_amountOut
+              end
+              item
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBTableView1_AmountIn
+              end
+              item
+                Kind = skSum
+                Column = cxGrid1DBTableView1_AmountIn
+              end>
+            DataController.Summary.FooterSummaryItems = <
+              item
+                Kind = skCount
+                Column = cxGrid1DBTableView1_Ct_number
+              end
+              item
+                Kind = skSum
+                Column = cxGrid1DBTableView1_amountOut
+              end
+              item
+                Kind = skSum
+                Column = cxGrid1DBTableView1_AmountIn
+              end
+              item
+                Kind = skSum
+                Column = cxGrid1DBTableView1_chf_in
+              end
+              item
+                Kind = skSum
+                Column = cxGrid1DBTableView1_chf_out
+              end>
+            DataController.Summary.SummaryGroups = <
+              item
+                Links = <
+                  item
+                    Column = cxGrid1DBTableView1_CashDeskName
+                  end
+                  item
+                    Column = cxGrid1DBTableView1_Ct_number
+                  end
+                  item
+                    Column = cxGrid1DBTableView1_Name
+                  end
+                  item
+                    Column = cxGrid1DBTableView1_DateTime
+                  end>
+                SummaryItems = <>
+              end>
+            OptionsView.Footer = True
+            OptionsView.Indicator = True
+            Preview.Visible = True
+            object cxGrid1DBTableView1_CashDeskName: TcxGridDBColumn
+              Caption = 'Cash desk'
+              DataBinding.FieldName = 'cashdeskname'
+            end
+            object cxGrid1DBTableView1_Ct_number: TcxGridDBColumn
+              Caption = 'Trans. No'
+              DataBinding.FieldName = 'ct_number'
+              Width = 202
+            end
+            object cxGrid1DBTableView1_Name: TcxGridDBColumn
+              Caption = 'Trans. Name'
+              DataBinding.FieldName = 'name'
+              Width = 114
+            end
+            object cxGrid1DBTableView1_DateTime: TcxGridDBColumn
+              Caption = 'Trans. Date'
+              DataBinding.FieldName = 'datetime'
+            end
+            object cxGrid1DBTableView1_Gaming_date: TcxGridDBColumn
+              Caption = 'Gaming Date'
+              DataBinding.FieldName = 'gaming_date'
+            end
+            object cxGrid1DBTableView1_case: TcxGridDBColumn
+              Caption = 'Trans. Direction'
+              DataBinding.FieldName = 'case'
+            end
+            object cxGrid1DBTableView1_name1: TcxGridDBColumn
+              Caption = 'Accout From'
+              DataBinding.FieldName = 'name_1'
+            end
+            object cxGrid1DBTableView1_name2: TcxGridDBColumn
+              Caption = 'Account To'
+              DataBinding.FieldName = 'name_2'
+              Width = 139
+            end
+            object cxGrid1DBTableView1_Status: TcxGridDBColumn
+              Caption = 'Status'
+              DataBinding.FieldName = 'status'
+            end
+            object cxGrid1DBTableView1_description: TcxGridDBColumn
+              DataBinding.FieldName = 'description'
+            end
+            object cxGrid1DBTableView1_Transname: TcxGridDBColumn
+              DataBinding.FieldName = 'transname'
+            end
+            object cxGrid1DBTableView1_UserName: TcxGridDBColumn
+              DataBinding.FieldName = 'user_name'
+            end
+            object cxGrid1DBTableView1_AmountIn: TcxGridDBColumn
+              Caption = 'Amount in'
+              DataBinding.FieldName = 'amount_in'
+              PropertiesClassName = 'TcxCalcEditProperties'
+              Properties.DisplayFormat = '### ### ### ### ##0.00'
+            end
+            object cxGrid1DBTableView1_amountOut: TcxGridDBColumn
+              Caption = 'Amount out'
+              DataBinding.FieldName = 'amount_out'
+              PropertiesClassName = 'TcxCalcEditProperties'
+              Properties.DisplayFormat = '### ### ### ### ##0.00'
+            end
+            object cxGrid1DBTableView1_currSymbol: TcxGridDBColumn
+              DataBinding.FieldName = 'currsymbol'
+            end
+            object cxGrid1DBTableView1_Selling: TcxGridDBColumn
+              DataBinding.FieldName = 'selling'
+            end
+            object cxGrid1DBTableView1_chf_in: TcxGridDBColumn
+              Caption = 'CHF in'
+              DataBinding.FieldName = 'cchf_in'
+              PropertiesClassName = 'TcxCalcEditProperties'
+              Properties.DisplayFormat = '### ### ### ### ##0.00'
+            end
+            object cxGrid1DBTableView1_chf_out: TcxGridDBColumn
+              Caption = 'CHF out'
+              DataBinding.FieldName = 'cchf_out'
+              PropertiesClassName = 'TcxCalcEditProperties'
+              Properties.DisplayFormat = '### ### ### ### ##0.00'
+            end
+            object cxGrid1DBTableView1_indicator: TcxGridDBColumn
+              DataBinding.FieldName = 'indicator'
+              Visible = False
+            end
+            object cxGrid1DBTableView1_IdTransactions: TcxGridDBColumn
+              DataBinding.FieldName = 'id_cd_transaction'
+              Visible = False
+            end
+            object cxGrid1DBTableView1_IdSubTransactions: TcxGridDBColumn
+              DataBinding.FieldName = 'id'
+              Visible = False
+            end
+          end
+          object cxGrid1DBTableView2: TcxGridDBTableView
+            DataController.Summary.DefaultGroupSummaryItems = <>
+            DataController.Summary.FooterSummaryItems = <>
+            DataController.Summary.SummaryGroups = <>
+            object cxGrid1DBTableView2Column1: TcxGridDBColumn
+            end
+          end
+          object cxGrid1Level1: TcxGridLevel
+            GridView = cxGrid1DBTableView1
+          end
+        end
+        object cxGrid2: TcxGrid
+          Left = 0
+          Top = 393
+          Width = 1167
+          Height = 198
+          Align = alClient
+          TabOrder = 1
+          object cxGrid2DBTableView1: TcxGridDBTableView
+            DataController.DataSource = PgDataSource_TransValues
+            DataController.Summary.DefaultGroupSummaryItems = <
+              item
+                Kind = skSum
+                Column = cxGrid2DBTableView_AmountCHF
+              end
+              item
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid2DBTableView_Nr
+              end
+              item
+                Kind = skSum
+                Column = cxGrid2DBTableView_Nr
+              end
+              item
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid2DBTableView_Amount
+              end
+              item
+                Kind = skSum
+                Column = cxGrid2DBTableView_Amount
+              end
+              item
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid2DBTableView_changeChf
+              end
+              item
+                Kind = skSum
+                Column = cxGrid2DBTableView_changeChf
+              end>
+            DataController.Summary.FooterSummaryItems = <
+              item
+                Kind = skSum
+                Column = cxGrid2DBTableView_AmountCHF
+              end
+              item
+                Kind = skSum
+                Column = cxGrid2DBTableView_Nr
+              end
+              item
+                Kind = skSum
+                Column = cxGrid2DBTableView_Amount
+              end
+              item
+                Kind = skSum
+                Column = cxGrid2DBTableView_changeChf
+              end>
+            DataController.Summary.SummaryGroups = <>
+            OptionsSelection.MultiSelect = True
+            OptionsView.Footer = True
+            OptionsView.FooterMultiSummaries = True
+            object cxGrid2DBTableView_category: TcxGridDBColumn
+              Caption = 'Category'
+              DataBinding.FieldName = 'category'
+            end
+            object cxGrid2DBTableView_ValueName: TcxGridDBColumn
+              Caption = 'Name'
+              DataBinding.FieldName = 'value'
+            end
+            object cxGrid2DBTableView_Nr: TcxGridDBColumn
+              Caption = 'Nr'
+              DataBinding.FieldName = 'nr'
+            end
+            object cxGrid2DBTableView_Amount: TcxGridDBColumn
+              Caption = 'Amount'
+              DataBinding.FieldName = 'amount'
+            end
+            object cxGrid2DBTableView_changeChf: TcxGridDBColumn
+              Caption = 'Change CHF'
+              DataBinding.FieldName = 'change_chf'
+            end
+            object cxGrid2DBTableView_AmountCHF: TcxGridDBColumn
+              Caption = 'Amount CHF'
+              DataBinding.FieldName = 'amount_chf'
+              PropertiesClassName = 'TcxCalcEditProperties'
+              Properties.DisplayFormat = '### ### ### ### ##0.00'
+            end
+          end
+          object cxGrid2Level1: TcxGridLevel
+            GridView = cxGrid2DBTableView1
+          end
+        end
+      end
+      object TabSheet_Shifts: TTabSheet
+        Caption = 'Shifts'
+        ImageIndex = 2
+        object ScrollBox2: TScrollBox
+          Left = 0
+          Top = 0
+          Width = 1167
+          Height = 591
+          Align = alClient
+          TabOrder = 0
+          object cxGrid4: TcxGrid
+            Left = 0
+            Top = 0
+            Width = 545
+            Height = 587
+            Align = alLeft
+            TabOrder = 0
+            object cxGridDBTableView2: TcxGridDBTableView
+              OnCellClick = cxGridDBTableView1CellClick
+              DataController.DataSource = dsvShifts
+              DataController.Summary.DefaultGroupSummaryItems = <
+                item
+                  Kind = skSum
+                  Position = spFooter
+                  Column = cxGridDBColumn5
+                end
+                item
+                  Kind = skSum
+                  Column = cxGridDBColumn5
+                end>
+              DataController.Summary.FooterSummaryItems = <
+                item
+                  Kind = skSum
+                  Column = cxGridDBColumn5
+                end>
+              DataController.Summary.SummaryGroups = <>
+              OptionsView.Footer = True
+              object cxGridDBColumn1: TcxGridDBColumn
+                Caption = 'CashDesk'
+                DataBinding.FieldName = 'cd_name'
+              end
+              object cxGridDBColumn2: TcxGridDBColumn
+                Caption = 'Gaming date'
+                DataBinding.FieldName = 'gaming_date'
+              end
+              object cxGridDBColumn3: TcxGridDBColumn
+                Caption = 'Shift'
+                DataBinding.FieldName = 'ct_number'
+              end
+              object cxGridDBColumn4: TcxGridDBColumn
+                Caption = 'User'
+                DataBinding.FieldName = 'user_name'
+              end
+              object cxGridDBColumn5: TcxGridDBColumn
+                Caption = 'Difference'
+                DataBinding.FieldName = 'difference'
+                PropertiesClassName = 'TcxCalcEditProperties'
+                Properties.DisplayFormat = '### ### ### ### ##0.00'
+              end
+              object cxGridDBColumn6: TcxGridDBColumn
+                Caption = ' Descrip. Supervisor'
+                DataBinding.FieldName = 'explanation_supervisor'
+              end
+              object cxGridDBColumn7: TcxGridDBColumn
+                Caption = 'Completed'
+                DataBinding.FieldName = 'datetime'
+              end
+              object cxGridDBColumn8: TcxGridDBColumn
+                DataBinding.FieldName = 'operation'
+                Visible = False
+              end
+              object cxGridDBColumn9: TcxGridDBColumn
+                DataBinding.FieldName = 'id'
+                Visible = False
+              end
+            end
+            object cxGridLevel2: TcxGridLevel
+              GridView = cxGridDBTableView2
+            end
+          end
+          object cxGrid3: TcxGrid
+            Left = 546
+            Top = 0
+            Width = 614
+            Height = 271
+            TabOrder = 1
+            object cxGridDBTableView1: TcxGridDBTableView
+              DataController.DataSource = dsvValues
+              DataController.Summary.DefaultGroupSummaryItems = <
+                item
+                  Kind = skSum
+                  Position = spFooter
+                  Column = cxGridDBTableView_Nr
+                end
+                item
+                  Kind = skSum
+                  Column = cxGridDBTableView_Nr
+                end
+                item
+                  Kind = skSum
+                  Position = spFooter
+                  Column = cxGridDBTableView_Amount
+                end
+                item
+                  Kind = skSum
+                  Column = cxGridDBTableView_Amount
+                end
+                item
+                  Kind = skSum
+                  Position = spFooter
+                  Column = cxGridDBTableView_AmountChf
+                end
+                item
+                  Kind = skSum
+                  Column = cxGridDBTableView_AmountChf
+                end>
+              DataController.Summary.FooterSummaryItems = <
+                item
+                  Kind = skSum
+                  Column = cxGridDBTableView_Nr
+                end
+                item
+                  Kind = skSum
+                  Column = cxGridDBTableView_Amount
+                end
+                item
+                  Kind = skSum
+                  Column = cxGridDBTableView_AmountChf
+                end>
+              DataController.Summary.SummaryGroups = <>
+              OptionsView.Footer = True
+              object cxGridDBTableView_category: TcxGridDBColumn
+                Caption = 'Category'
+                DataBinding.FieldName = 'category'
+              end
+              object cxGridDBTableView_ValueName: TcxGridDBColumn
+                Caption = 'Name'
+                DataBinding.FieldName = 'value_name'
+              end
+              object cxGridDBTableView_Nr: TcxGridDBColumn
+                Caption = 'Nr'
+                DataBinding.FieldName = 'nr'
+              end
+              object cxGridDBTableView_Multiplier: TcxGridDBColumn
+                Caption = 'Multiplier'
+                DataBinding.FieldName = 'multiplier'
+              end
+              object cxGridDBTableView_Amount: TcxGridDBColumn
+                Caption = 'Amount'
+                DataBinding.FieldName = 'amount'
+              end
+              object cxGridDBTableView_Curr: TcxGridDBColumn
+                Caption = 'Curr.'
+                DataBinding.FieldName = 'currency_symbol'
+              end
+              object cxGridDBTableView_Rate: TcxGridDBColumn
+                Caption = 'Rate'
+                DataBinding.FieldName = 'exchange_rate'
+              end
+              object cxGridDBTableView_AmountChf: TcxGridDBColumn
+                Caption = 'Amount CHF'
+                DataBinding.FieldName = 'amount_chf'
+                PropertiesClassName = 'TcxCalcEditProperties'
+                Properties.DisplayFormat = '### ### ### ### ##0.00'
+              end
+            end
+            object cxGridLevel1: TcxGridLevel
+              GridView = cxGridDBTableView1
+            end
+          end
+          object cxDBMemo1: TcxDBMemo
+            Left = 546
+            Top = 269
+            DataBinding.DataField = 'user_explanation'
+            DataBinding.DataSource = dsvShifts
+            Properties.OnChange = cxDBMemo1PropertiesChange
+            TabOrder = 2
+            Height = 64
+            Width = 614
+          end
+          object cxGrid5: TcxGrid
+            Left = 546
+            Top = 328
+            Width = 614
+            Height = 256
+            TabOrder = 3
+            object cxGridDBTableView3: TcxGridDBTableView
+              DataController.DataSource = dsvAmounts
+              DataController.Summary.DefaultGroupSummaryItems = <
+                item
+                  Kind = skSum
+                  Position = spFooter
+                end
+                item
+                  Kind = skSum
+                end
+                item
+                  Kind = skSum
+                  Position = spFooter
+                end
+                item
+                  Kind = skSum
+                end>
+              DataController.Summary.FooterSummaryItems = <
+                item
+                  Kind = skSum
+                end
+                item
+                  Kind = skSum
+                end
+                item
+                  Kind = skSum
+                end
+                item
+                  Kind = skSum
+                  Column = cxGridDBTableView3Column7
+                end
+                item
+                  Kind = skSum
+                  Column = cxGridDBTableView3Column2
+                end
+                item
+                  Kind = skSum
+                  Column = cxGridDBTableView3Column4
+                end
+                item
+                  Kind = skSum
+                  Column = cxGridDBTableView3Column5
+                end
+                item
+                  Kind = skSum
+                  Column = cxGridDBTableView3Column8
+                end>
+              DataController.Summary.SummaryGroups = <>
+              OptionsView.Footer = True
+              object cxGridDBTableView3Column1: TcxGridDBColumn
+                DataBinding.FieldName = 'category_name'
+                SortIndex = 0
+                SortOrder = soAscending
+              end
+              object cxGridDBTableView3Column2: TcxGridDBColumn
+                DataBinding.FieldName = 'actual_amount_fc'
+              end
+              object cxGridDBTableView3Column3: TcxGridDBColumn
+                DataBinding.FieldName = 'currency_symbol'
+              end
+              object cxGridDBTableView3Column4: TcxGridDBColumn
+                DataBinding.FieldName = 'actual_amount'
+              end
+              object cxGridDBTableView3Column5: TcxGridDBColumn
+                DataBinding.FieldName = 'amount_expected_fc'
+              end
+              object cxGridDBTableView3Column6: TcxGridDBColumn
+                DataBinding.FieldName = 'currency_symbol'
+              end
+              object cxGridDBTableView3Column7: TcxGridDBColumn
+                DataBinding.FieldName = 'amount_expected'
+              end
+              object cxGridDBTableView3Column8: TcxGridDBColumn
+                DataBinding.FieldName = 'difference'
+              end
+            end
+            object cxGridLevel3: TcxGridLevel
+              GridView = cxGridDBTableView3
+            end
+          end
+        end
+      end
+    end
+  end
+  object PgDataSource1: TPgDataSource
+    DataSet = PgQuery1
+    Left = 32
+    Top = 216
+  end
+  object PgQuery1: TPgQuery
+    Connection = frmDatabase.KivosConnection
+    SQL.Strings = (
+      'select trs.* ,ct.gaming_date,us.user_name,cd.cd_name,'
+      'case when substring(trs.ct_number, 1,2)= '#39'IN'#39' then '#39'INFO'#39
+      ' when substring(trs.ct_number, 1,2)= '#39'OP'#39' then '#39'OPEN'#39' '
+      ' when substring(trs.ct_number, 1,2)= '#39'CL'#39' then '#39'CLOSE'#39
+      ' when substring(trs.ct_number, 1,2)= '#39'CH'#39' then '#39'CHANGE'#39
+      ' end'
+      'from tbl_cd_cash_transactions_shift_values trs'
+      
+        'left join tbl_cd_cash_transactions ct on ct.ct_number = trs.ct_n' +
+        'umber'
+      'left join tbl_users us on us.id = ct.id_user'
+      'left join tbl_cd cd on cd.id =trs.id_cashdesk')
+    Left = 32
+    Top = 264
+  end
+  object PgDataSource_Trans: TPgDataSource
+    DataSet = PgQuery_trans
+    Left = 192
+    Top = 128
+  end
+  object PgQuery_trans: TPgQuery
+    Connection = frmDatabase.KivosConnection
+    SQL.Strings = (
+      
+        'select   subt.id_cd_transaction,  subt.id as id,  '#39' '#39' , '#39'---->'#39' ' +
+        'as indicator, cdt.ct_number,  '
+      
+        't.name, case when subt.direction = '#39'1'#39' then '#39'In'#39' else '#39'Out'#39' end,' +
+        ' '
+      '       '
+      
+        '  a1.name, a2.name, a3.name,cdt.gaming_date as gamingdate,  subt' +
+        '.amount_in,  subt.amount_out,  cdt.datetime,'
+      
+        '0 as trans,0 as Mp,  cd.cd_name as cashDeskName,cd.id as idCaskD' +
+        'esk,  '
+      '         '
+      
+        't.name as transName,cdt.gaming_date, case when cdt.confirmed=1  ' +
+        'then '#39'accounted'#39' else '#39#39' end'
+      
+        ' as Status,  cat.name as transCatName,cdt.remarks as description' +
+        ',  '
+      '        '
+      
+        ' curr.symbol as currSymbol, currRate.selling, t.id_currency,  su' +
+        'bt.amount_in * currRate.Selling as Cchf_in,  '
+      'subt.amount_out * currRate.Selling as Cchf_out,t.id_report, '
+      '         t.how_many_copies ,us.user_name'
+      'from  tbl_cd_cash_transactions as cdt  '
+      '         '
+      
+        'left join tbl_cd_cash_transactions_subt as subt on cdt.ct_number' +
+        ' = subt.ct_number  '
+      '         '
+      
+        'left join tbl_transactions as t on subt.multiple_subtransaction_' +
+        'id = t.id  '
+      '        '
+      ' left join tbl_cd cd on cd.id=cdt.id_cashdesk  '
+      '         left join tbl_categories cat on t.id_category=cat.id  '
+      '         '
+      'left join tbl_currencies curr on t.id_currency=curr.id'
+      'left join tbl_users us on cdt.id_user = us.id  '
+      '        '
+      
+        ' left join tbl_accounts  a1 on cast(subt.id_account_from as char' +
+        'acter varying) = a1.account_id  left join tbl_accounts  a2 on ca' +
+        'st(subt.id_account_to as character varying) = a2.account_id  '
+      
+        '         left join tbl_accounts a3 on cdt.account_id_transfer = ' +
+        'a3.account_id  '
+      
+        '         left join tbl_currencies_exchange_rates currRate on  cu' +
+        'rrRate.id_currency=curr.id        '
+      
+        '              and  currRate.valid_from <= cast(now() as date) an' +
+        'd             currRate.valid_to>= cast(now() as date)  '
+      
+        '         where    cdt.is_multiple_cd_transaction = 1  and  cast(' +
+        'cdt.DateTime as date) between  '#39'2012-11-01'#39'  and  '#39'2012-12-01'#39'  ' +
+        'and substring(cdt.ct_number ,1,4)='#39'NORM'#39
+      '         and cd.id=-1100'
+      'union    '
+      
+        '         select  0 as id_cd_transaction,   subt.id_cd_transactio' +
+        'n as id,   '#39' '#39',   cdt.ct_number as indicator,   cdt.ct_number,  ' +
+        ' '
+      
+        '         case when cdt.is_multiple_cd_transaction = 1 then mt.na' +
+        'me else t.name end,   case when cdt.direction = 1 then '#39'In'#39' else' +
+        ' '#39'Out'#39' end,    '
+      
+        '            a1.name, a2.name, a3.name ,cdt.gaming_date as gaming' +
+        'date,  cdt.amount_in,   cdt.amount_out,   cdt.datetime,  cdt.id_' +
+        'cd_transaction as trans,    '
+      '           '
+      
+        ' cdt.is_multiple_cd_transaction as Mp,cd.cd_name as cashDeskName' +
+        ',cd.id as idCaskDesk,  t.name as transName, '
+      'cdt.gaming_date, case when cdt.confirmed=1  '
+      '            then '#39'accounted'#39' else '#39' '#39' end as Status,   '
+      
+        'cat.name as transCatName, cdt.remarks as description,   curr.sym' +
+        'bol as currSymbol, currRate.selling , '
+      '           '
+      ''
+      
+        ' t.id_currency,  cdt.amount_in * currRate.Selling as Cchf_in,  c' +
+        'dt.amount_out * currRate.Selling as Cchf_out, t.id_report, '
+      't.how_many_copies ,us.user_name '
+      '            from  tbl_cd_cash_transactions as cdt  '
+      
+        ' left join tbl_cd_cash_transactions_subt as subt on cdt.ct_numbe' +
+        'r = subt.ct_number   '
+      '            '
+      
+        'left join tbl_transactions as t on cdt.id_cd_transaction = t.id ' +
+        ' left join tbl_multiple_transactions as mt on cdt.id_cd_transact' +
+        'ion = mt.id  '
+      '           '
+      ' left join tbl_cd cd on cd.id=cdt.id_cashdesk  '
+      '           '
+      ' left join tbl_categories cat on t.id_category=cat.id  '
+      'left join tbl_users us on cdt.id_user = us.id'
+      '           '
+      ' left join tbl_currencies curr on t.id_currency=curr.id  '
+      '           '
+      
+        ' left join tbl_accounts as a1 on cdt.account_id_from = a1.accoun' +
+        't_id  left join tbl_accounts as a2 on cdt.account_id_to = a2.acc' +
+        'ount_id  '
+      '           '
+      
+        ' left join tbl_accounts as a3 on cdt.account_id_transfer = a3.ac' +
+        'count_id  '
+      '            '
+      
+        'left join tbl_currencies_exchange_rates currRate on  currRate.id' +
+        '_currency=curr.id           '
+      '         '
+      
+        '   and  currRate.valid_from <= cast(now() as date) and          ' +
+        '   '
+      '            '
+      'currRate.valid_to>= cast(now() as date) where    '
+      
+        'cast(cdt.DateTime as date) between  '#39'2012-11-01'#39'  and  '#39'2012-12-' +
+        '01'#39' and substring(cdt.ct_number ,1,4)='#39'NORM'#39
+      'and cd.id=-1100')
+    Left = 304
+    Top = 136
+  end
+  object PgDataSource_TransValues: TPgDataSource
+    DataSet = PgQuery_TransValues
+    Left = 720
+    Top = 512
+  end
+  object PgQuery_TransValues: TPgQuery
+    Connection = frmDatabase.KivosConnection
+    SQL.Strings = (
+      'select '
+      '  c.*, '
+      '  v.multiplier,'
+      '  c.nr * v.multiplier as amount,'
+      '  cer.buying as change_chf,'
+      '  c.nr * v.multiplier * cer.buying as amount_chf,'
+      '  cat.name as category,'
+      '  v.name as value,'
+      '  cdv as ord'
+      'from'
+      '  tbl_cd_cash_transactions_subt_categories_values as c,'
+      '  tbl_values as v,'
+      '  tbl_categories as cat,'
+      '  tbl_currencies_exchange_rates as cer,'
+      '  tbl_currencies as curr,'
+      '  tbl_transactions_values as cdv '
+      'where'
+      '  0 = 1 and '
+      '  c.ct_number = '#39'-1'#39' and'
+      '  c.id_cd_category = cat.id and'
+      '  c.id_cd_value = v.id and'
+      '  cer.valid_from <= now() and'
+      '  cer.valid_to >= now() and'
+      '  cer.id_currency = curr.id and'
+      '  v.id_currency = curr.id'
+      'order by  '
+      '  v.sort_order asc')
+    Left = 560
+    Top = 424
+  end
+  object vShifts: TPgQuery
+    Connection = frmDatabase.KivosConnection
+    SQL.Strings = (
+      'select  cdt.id as id'
+      '      , 0 as id_cd_transaction'
+      '      , cd.cd_name'
+      '      , cdt.base_ct_Number '
+      '      , cdt.ct_number  '
+      '      , cdt.difference '
+      '      , cdt.DateTime '
+      '      , cdt.Gaming_date '
+      
+        '      ,cast( (case when substr(cdt.ct_number,1,2)='#39'OP'#39' then '#39'Ope' +
+        'n'#39' '
+      '              when substr(cdt.ct_number,1,2)='#39'CL'#39' then '#39'Close'#39
+      
+        '              when substr(cdt.ct_number,1,2)='#39'IN'#39' then '#39'Info'#39'  e' +
+        'nd) as Varchar(20)) as operation '
+      '      , us.first_name ||'#39' '#39'|| us.last_name as user_name'
+      '      , cdt.explanation_supervisor,cdt.user_explanation'
+      '     from tbl_cd_cash_transactions cdt '
+      '     left join tbl_cd cd on cd.id=cdt.id_cashDesk '
+      '     left join tbl_users us on cdt.id_user=us.id '
+      '     where   cdt.type in (1,3,5,6,7,8,9) '
+      '        and cdt.datetime between :d1 and :d2 '
+      '    group by cdt.id,cd.cd_name ,us.first_name,us.last_name')
+    Left = 304
+    Top = 180
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'd1'
+        Value = '1944-12-12'
+      end
+      item
+        DataType = ftString
+        Name = 'd2'
+        Value = '1944-12-12'
+      end>
+  end
+  object dsvShifts: TPgDataSource
+    AutoEdit = False
+    DataSet = vShifts
+    Left = 368
+    Top = 180
+  end
+  object vValues: TPgQuery
+    Connection = frmDatabase.KivosConnection
+    SQL.Strings = (
+      'Select   c.*'
+      '      ,  c.id_cd_transaction c_id_cd_transaction'
+      '      ,   v.multiplier'
+      '      ,   c.nr * v.multiplier as amount_base'
+      '      ,   c.exchange_rate as change_chf'
+      '      ,   c.nr * v.multiplier * c.exchange_rate as amount_chf'
+      '      ,   cat.name as category'
+      '      ,   v.name as value_name'
+      
+        '      ,   (select ord from tbl_transactions_values cdv where c.i' +
+        'd_cd_value = cdv.id_value and cdv.id_transaction=c.id_cd_transac' +
+        'tion) ord'
+      '      ,   (case when c.direction = 1 then c.amount_in'
+      '                when c.direction = 2 then c.amount_out'
+      '                end) amount  '
+      '    from   tbl_cd_cash_transactions_subt_categories_values as c '
+      '         left join tbl_values as v on  c.id_cd_value = v.id '
+      
+        '         left join tbl_categories as cat  on  c.id_cd_category =' +
+        ' cat.id '
+      
+        '         left join tbl_cd_cash_transactions_subt as cd on cd.id=' +
+        'c.id_cd_sub_transaction '
+      
+        '         left join tbl_transactions_values cdv on c.id_cd_value ' +
+        '= cdv.id_value and cdv.id_transaction=c.id_cd_transaction'
+      '     where c.id_cd_transaction = -10000 '
+      '         order by cdv.ord asc')
+    MasterSource = dsvShifts
+    Left = 512
+    Top = 124
+  end
+  object dsvValues: TPgDataSource
+    AutoEdit = False
+    DataSet = vValues
+    Left = 564
+    Top = 124
+  end
+  object vAmounts: TPgQuery
+    Connection = frmDatabase.KivosConnection
+    SQL.Strings = (
+      
+        'Select category_name, currency_symbol, actual_amount_fc, actual_' +
+        'amount,'
+      
+        '           amount_expected_fc, amount_expected, difference, date' +
+        'time '
+      
+        '          from tbl_cd_cash_transactions_shift_values  where ct_n' +
+        'umber= '#39'0'#39
+      '           order by id')
+    MasterSource = dsvShifts
+    Left = 532
+    Top = 496
+  end
+  object dsvAmounts: TPgDataSource
+    AutoEdit = False
+    DataSet = vAmounts
+    Left = 624
+    Top = 500
+  end
+end

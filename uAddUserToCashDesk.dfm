@@ -1,0 +1,2 @@
+inherited AddUserToCashDesk: TAddUserToCashDesk
+end

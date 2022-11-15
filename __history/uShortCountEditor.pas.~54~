@@ -1,0 +1,281 @@
+unit uShortCountEditor;
+
+interface
+
+uses classes, sysUtils, uDataBase, cxDBLookupComboBox, cxCheckBox, cxPC,
+  controls, Variants;
+
+type
+
+  ArrayOfResultHandle = array of TResultHandle;
+  ArrayOfcxDBLookupComboBox = array of TcxDBLookupComboBox;
+  ArrayofcxCheckBox = array of tcxCheckBox;
+
+  TTransactionsShortcutsEditor = class(TObject)
+  private
+    FListTransactions: TResultHandle;
+    FListMultipleTransactions: TResultHandle;
+    FResults: ArrayOfResultHandle;
+    procedure OnClick_Multiple(Asender: TObject);
+    procedure Onclick_Transactions(Asender: TObject);
+  public
+    FidCashDesk: string;
+    FidUser: string;
+    FTabSheet: TcxTabSheet;
+    constructor create;
+    Destructor Destroy; override;
+    procedure InitializeEditor;
+  end;
+
+implementation
+
+uses uGlobals, uSystem;
+
+{ TTransactionsShortcutsEditor }
+const
+  cCountShortCuts = 16;
+
+  // #################################################################################################################
+constructor TTransactionsShortcutsEditor.create;
+begin
+  FidCashDesk := EmptyStr;
+  FidUser := EmptyStr;
+  SetLength(FResults, cCountShortCuts);
+end;
+
+// #################################################################################################################
+
+destructor TTransactionsShortcutsEditor.Destroy;
+var
+  i: integer;
+begin
+  { for i := Low(FCombo_Transactions) to High(FCombo_Transactions) do
+    begin
+    FCombo_Transactions[i].DataBinding.DataSource := nil;
+    FCombo_Transactions[i].Properties.ListSource := nil;
+    end;
+  }
+  FListTransactions.ClearResult;
+  FListTransactions.Free;
+  FListMultipleTransactions.ClearResult;
+  FListMultipleTransactions.Free;
+  // tu trzeba wynilowaæ po³¹cznia na komponentach
+  for i := Low(FResults) to High(FResults) do
+  begin
+    FResults[i].ClearResult;
+    FResults[i].Free;
+  end;
+  inherited;
+end;
+// #################################################################################################################
+{ CREATE TABLE tbl_Shortcut_User
+  (
+  id serial NOT NULL,
+  id_cd_transaction integer,
+  id_cashdesk integer,
+  id_component integer,
+  labels character varying,
+  id_user integer,
+  id_account integer,
+  direction integer,
+  is_multiple integer,
+  CONSTRAINT pk_tbl_tbl_Shortcut_User_id PRIMARY KEY (id)
+  )
+  WITH (
+  OIDS=FALSE
+  );
+  ALTER TABLE tbl_Shortcut_User
+  OWNER TO postgres;
+}
+
+procedure TTransactionsShortcutsEditor.InitializeEditor;
+var
+  xQuery: string;
+  i: integer;
+  xDataSet: TResultHandle;
+  xTag: integer;
+  xName: string;
+  xComponent: TControl;
+begin
+  FListTransactions := TResultHandle.create;
+  FListMultipleTransactions := TResultHandle.create;
+
+  // Zwyk³e transakcje
+  xQuery := 'select * from ( ' +
+    'select 0 as id, ''Select transaction'' as name ' + 'union ' +
+    'select cdt.id_transaction as id, t.name ' +
+    'from tbl_cd_transactions as cdt ' +
+    'left join tbl_transactions as t on cdt.id_transaction = t.id ' + 'where ' +
+    '  cdt.id_cashdesk = ' + StringToDataBAse(FidCashDesk) +
+    ') as t order by id asc ';
+
+  FListTransactions.ClearResult;
+  FListTransactions.Add(xQuery);
+  FListTransactions.InvokeSQL;
+
+  // Multiple
+  xQuery := 'select 0 as id, ''Select transaction'' as name ' + 'union ' +
+    'select cdt.id_multiple_transaction as id, t.name ' +
+    'from tbl_cd_multiple_transactions as cdt ' +
+    'left join tbl_multiple_transactions as t on cdt.id_multiple_transaction = t.id '
+    + 'where cdt.id_cashdesk = ' + StringToDataBAse(FidCashDesk);
+  FListMultipleTransactions.ClearResult;
+  FListMultipleTransactions.Add(xQuery);
+  FListMultipleTransactions.InvokeSQL;
+
+  // W zale¿noœci czy checkbox 'Multiple'  zaznaczony, to pod³aczamy odpowiedni¹ listê.
+  xTag := ckeyNILL;
+
+  for i := 1 to 16 do
+  begin
+    xComponent := nil;
+    xName := 'cxDBLookupComboBox_Trans' + IntToStr(i);
+    xComponent := FTabSheet.FindChildControl(xName);
+    if Assigned(xComponent) then
+    begin
+
+      xDataSet := TResultHandle.create;
+      FResults[i - 1] := xDataSet;
+      xTag := twincontrol(xComponent).Tag;
+      TcxDBLookupComboBox(xComponent).Properties.KeyFieldNames := 'id';
+      TcxDBLookupComboBox(xComponent).Properties.ListFieldNames := 'name';
+      xQuery := 'Select id_cd_transaction as id, is_multiple  from tbl_Shortcut_User where id_component=%s and id_cashdesk=%s and id_user=%s ';
+      xQuery := format(xQuery, [IntToStr(xTag), StringToDataBAse(FidCashDesk),
+        StringToDataBAse(FidUser)]);
+      xDataSet.ClearResult;
+      xDataSet.Add(xQuery);
+      xDataSet.InvokeSQL;
+      if xDataSet.Count > 0 then
+      begin
+        if xDataSet.Query.FieldByName('is_multiple').AsInteger = 1 then
+        begin
+          TcxDBLookupComboBox(xComponent).Properties.ListSource :=
+            FListMultipleTransactions.DataSource;
+        end
+        else
+        begin
+          TcxDBLookupComboBox(xComponent).Properties.ListSource :=
+            FListTransactions.DataSource;
+        end;
+      end
+      else
+      begin
+        TcxDBLookupComboBox(xComponent).Properties.ListSource :=
+          FListTransactions.DataSource;
+
+      end;
+      TcxDBLookupComboBox(xComponent).DataBinding.DataField := 'id';
+      TcxDBLookupComboBox(xComponent).DataBinding.DataSource :=
+        xDataSet.DataSource;
+      if xDataSet.Count = 0 then
+        TcxDBLookupComboBox(xComponent).EditValue := 0;
+    end;
+
+  end;
+
+  for i := 1 to 16 do
+  begin
+    xComponent := nil;
+    xName := 'cxDBLookupComboBox_Account' + IntToStr(i);
+    xComponent := FTabSheet.FindChildControl(xName);
+    if Assigned(xComponent) then
+    begin
+      twincontrol(xComponent).Visible := false;
+    end;
+    xComponent := nil;
+    xName := 'cxLabel_Account' + IntToStr(i);
+    xComponent := FTabSheet.FindChildControl(xName);
+    if Assigned(xComponent) then
+    begin
+      twincontrol(xComponent).Visible := false;
+    end;
+    xComponent := nil;
+    xName := 'cxCheckBox_Multiple' + IntToStr(i);
+    xComponent := FTabSheet.FindChildControl(xName);
+    if Assigned(xComponent) then
+    begin
+      tcxCheckBox(xComponent).OnClick := OnClick_Multiple;
+    end;
+  end;
+
+end;
+
+// #################################################################################################################
+
+procedure TTransactionsShortcutsEditor.OnClick_Multiple(Asender: TObject);
+var
+  xTag: integer;
+  xControl: TControl;
+  xName: string;
+begin
+  xTag := tcxCheckBox(Asender).Tag;
+  xName := 'cxDBLookupComboBox_Trans' + IntToStr(xTag + 1);
+  xControl := FTabSheet.FindChildControl(xName);
+  if Assigned(xControl) then
+  begin
+    if tcxCheckBox(Asender).Checked then // Multiple transactions
+    begin
+      if TcxDBLookupComboBox(xControl).Properties.ListSource <>
+        FListMultipleTransactions.DataSource then
+      begin
+        TcxDBLookupComboBox(xControl).Properties.ListSource :=
+          FListMultipleTransactions.DataSource;
+      end;
+    end
+    else
+    begin // Transactions
+      if TcxDBLookupComboBox(xControl).Properties.ListSource <>
+        FListTransactions.DataSource then
+      begin
+        TcxDBLookupComboBox(xControl).Properties.ListSource :=
+          FListTransactions.DataSource;
+      end;
+    end;
+  end;
+end;
+
+// #################################################################################################################
+
+procedure TTransactionsShortcutsEditor.Onclick_Transactions(Asender: TObject);
+var
+  xTag: integer;
+  xName: string;
+  xControl: TControl;
+  xTrans: string;
+  xQuery: string;
+  xDataSet: TResultHandle;
+begin
+  xTrans := EmptyStr;
+  xTag := tcxCheckBox(Asender).Tag;
+  xTrans := vartostr(TcxDBLookupComboBox(Asender).EditValue);
+  if ((xTrans <> '0') and (xTrans <> EmptyStr)) then
+  begin
+    xQuery := ' Select is_multiple_accounts_manual, is_multiple_accounts_fixed, direction '
+      + ' from  tbl_transactions   ' +
+      ' join tbl_cd_transactions on tbl_cd_transactions.id_transaction=tbl_transactions.id '
+      + ' and id_cashDesk=%s and id_Transaction=%s ';
+
+    xQuery := format(xQuery, [StringToDataBAse(FidCashDesk),
+      StringToDataBAse(xTrans)]);
+    xDataSet := TResultHandle.create;
+    xDataSet.ClearResult;
+    xDataSet.Add(xQuery);
+    xDataSet.InvokeSQL;
+    if ((xDataSet.Query.FieldByName('is_multiple_accounts_manual')
+      .AsInteger = 1) or
+      (xDataSet.Query.FieldByName('is_multiple_accounts_fixed').AsInteger = 1))
+    then
+    begin
+     xName:= 'cxDBLookupComboBox_Account'+IntToStr(xTag);
+     xControl:= FTabSheet.FindChildControl(xName);
+     if Assigned(xControl) then begin
+     
+     
+     end;
+    end;
+  end;
+end;
+
+// #################################################################################################################
+
+end.

@@ -1,0 +1,1 @@
+insert into tbl_access_objects(id, object_name) values(84, 'Frame.AdvancedReports');

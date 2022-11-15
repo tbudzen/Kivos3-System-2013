@@ -1,0 +1,2 @@
+inherited AddAmountChangeFrame: TAddAmountChangeFrame
+end

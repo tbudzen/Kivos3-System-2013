@@ -1,0 +1,2 @@
+inherited AddCashDeskFrame: TAddCashDeskFrame
+end

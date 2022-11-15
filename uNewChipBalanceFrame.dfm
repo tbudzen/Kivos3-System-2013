@@ -1,0 +1,2 @@
+inherited NewChipBalanceFrame: TNewChipBalanceFrame
+end

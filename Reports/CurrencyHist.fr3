@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="4.12.2" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="41240,8447452083" ReportOptions.Description.Text="" ReportOptions.LastChange="41240,8748137847" ScriptLanguage="PascalScript" ScriptText.Text="begin&#13;&#10;&#13;&#10;end." PropData="044C65667403900003546F7003D8000844617461736574730101063120446174615365743D226672784442446174617365745F7072696E742220446174615365744E616D653D225072696E74220000095661726961626C65730100055374796C650100">
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxReportPage Name="MainPage" PaperWidth="120" PaperHeight="297" PaperSize="256" LeftMargin="10" RightMargin="10" TopMargin="10" BottomMargin="10" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="">
+    <TfrxReportTitle Name="ReportTitle1" Height="56,69295" Left="0" Top="18,89765" Width="377,953">
+      <TfrxMemoView Name="Memo1" Left="0" Top="11,33859" Width="377,953" Height="18,89765" ShowHint="False" HAlign="haCenter" Text="Exchange currency historical"/>
+    </TfrxReportTitle>
+    <TfrxGroupHeader Name="GroupHeader1" Height="22,67718" Left="0" Top="136,06308" Width="377,953" Condition="Print.&#34;symbol_curr&#34;">
+      <TfrxMemoView Name="Memo2" Left="3,77953" Top="3,77952999999999" Width="113,3859" Height="18,89765" ShowHint="False" DataField="symbol_curr" DataSet="frxDBDataset_print" DataSetName="Print" Font.Charset="1" Font.Color="0" Font.Height="-16" Font.Name="Arial" Font.Style="1" ParentFont="False" Text="[Print.&#34;symbol_curr&#34;]"/>
+    </TfrxGroupHeader>
+    <TfrxMasterData Name="MasterData1" Height="86,92919" Left="0" Top="181,41744" Width="377,953" ColumnWidth="0" ColumnGap="0" DataSet="frxDBDataset_print" DataSetName="Print" RowCount="0">
+      <TfrxMemoView Name="Memo3" Left="60,47248" Top="11,33859" Width="94,48825" Height="18,89765" ShowHint="False" DataField="buying" DataSet="frxDBDataset_print" DataSetName="Print" Text="[Print.&#34;buying&#34;]"/>
+      <TfrxMemoView Name="Memo4" Left="3,77953" Top="11,33859" Width="52,91342" Height="18,89765" ShowHint="False" Text="Buying"/>
+      <TfrxMemoView Name="Memo5" Left="158,74026" Top="11,33859" Width="52,91342" Height="18,89765" ShowHint="False" Text="Selling"/>
+      <TfrxMemoView Name="Memo6" Left="215,43321" Top="11,33859" Width="94,48825" Height="18,89765" ShowHint="False" DataField="selling" DataSet="frxDBDataset_print" DataSetName="Print" Text="[Print.&#34;selling&#34;]"/>
+      <TfrxMemoView Name="Memo7" Left="3,77953" Top="34,01577" Width="37,7953" Height="18,89765" ShowHint="False" Text="From"/>
+      <TfrxMemoView Name="Memo8" Left="45,35436" Top="34,01577" Width="257,00804" Height="18,89765" ShowHint="False" DataField="valid_from" DataSet="frxDBDataset_print" DataSetName="Print" Text="[Print.&#34;valid_from&#34;]"/>
+      <TfrxMemoView Name="Memo9" Left="3,77953" Top="52,91342" Width="37,7953" Height="18,89765" ShowHint="False" Text="To"/>
+      <TfrxMemoView Name="Memo10" Left="45,35436" Top="52,91342" Width="257,00804" Height="18,89765" ShowHint="False" DataField="valid_to" DataSet="frxDBDataset_print" DataSetName="Print" Text="[Print.&#34;valid_to&#34;]"/>
+      <TfrxLineView Name="Line1" Left="0" Top="75,5906" Width="377,953" Height="0" ShowHint="False" Frame.Typ="4"/>
+    </TfrxMasterData>
+  </TfrxReportPage>
+</TfrxReport>

@@ -1,0 +1,632 @@
+unit uReportPreview;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uBaseFrame, Vcl.ComCtrls, frxClass,
+  frxPreview, Vcl.Buttons, Vcl.ExtCtrls, Vcl.ImgList, frxDBSet, Data.DB,
+  Datasnap.DBClient, frxExportPDF, frxGradient, uDatabAse;
+
+const
+  CFramePreview = 'ReportPreview';
+  CFrameTicket = 'ReportTicket';
+
+  cParams_ctNumber = 'ct_number';
+  cParams_idCashDesk = 'id_cashDesk';
+  cParams_dataFrom = 'valid_from';
+  cParams_dataTo = 'valid_to';
+
+  cReportTicket = 1;
+  cReportBalance = 2;
+  cReportTransfer = 3; // +
+  cReportGeneralTicket = 4;
+  cReportShift = 5;
+  cReportBalanceShifts = 6;
+  cReportCurrency = 7;
+  cReportCurrencyHist = 8;
+
+type
+
+  TReportQuiet = class;
+  TclassReportQuiet = class of TReportQuiet;
+
+  TReportPreview = class(TBaseFrame)
+    StatusBar: TStatusBar;
+    CustomPreview: TfrxPreview;
+    IM32x32: TImageList;
+    IM16x16: TImageList;
+    PDFExport: TfrxPDFExport;
+    Panel_top: TPanel;
+    cxPrint: TSpeedButton;
+    cxPageSetup: TSpeedButton;
+    cxZoomIn: TSpeedButton;
+    cxZoomOut: TSpeedButton;
+    cxNormalPage: TSpeedButton;
+    cxPageWidth: TSpeedButton;
+    cxFullPage: TSpeedButton;
+    Bevel1: TBevel;
+    Bevel2: TBevel;
+    cxPrevPage: TSpeedButton;
+    cxNextPage: TSpeedButton;
+    cxPreview: TSpeedButton;
+    Bevel3: TBevel;
+    frxGradientObject1: TfrxGradientObject;
+    ReportDataSet: TfrxDBDataset;
+    procedure CustomPreviewPageChanged(Sender: TfrxPreview; PageNo: Integer);
+    procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
+      WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+    procedure ReportProgress(Sender: TfrxReport; ProgressType: TfrxProgressType;
+      Progress: Integer);
+    procedure ReportProgressStart(Sender: TfrxReport;
+      ProgressType: TfrxProgressType; Progress: Integer);
+    procedure ReportProgressStop(Sender: TfrxReport;
+      ProgressType: TfrxProgressType; Progress: Integer);
+  private
+    FRun: Boolean;
+  public
+    DataSet: TResultHandle;
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure AllButtonClick(Sender: TObject);
+    procedure FrameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    function GetPrinterName: string;
+  protected
+    Fct_number: string;
+    FidCaskdesk: string;
+    function LoadFiles: Boolean; virtual;
+    function LoadData: Boolean; virtual;
+    procedure LoadParametres; virtual;
+    procedure ShowReport; virtual;
+    function GetReportName: string; virtual;
+  end;
+
+  // Transakcja pojedyncza mo¿e mieæ zdefiniowany jeden raport
+  TReportQuiet = class(TObject)
+  public
+    Report: TfrxReport;
+    constructor createNew;
+    DESTRUCTOR Destroy; override;
+    procedure Print; virtual;
+    procedure GetReport; virtual;
+    procedure SaveParametresToDataBase; virtual;
+  protected
+
+  end;
+
+  // Only quaiet reports
+  TReportsPrinter = class(TObject)
+  private
+    function GetClassReports: TclassReportQuiet;
+    function CreateQuietReport: Boolean;
+  public
+    FIdReport: Integer; // USTAWIÆ Z transackji
+    FidCashDesk: Integer; // param
+    Fct_number: string; // Param
+    FCopies: Integer;
+    FQuietReport: TReportQuiet;
+    FDataFrom: TDateTime;
+    FDataTo: TDateTime;
+    constructor Create;
+    destructor Destroy; override;
+    function GetPrinterName: string;
+    procedure SaveParametresToDataBase;
+    procedure PrintReport;
+
+  protected
+
+  end;
+
+implementation
+
+uses uFrmMain, uReportTicket, uReportTransfer, uReportShiftPreview,
+  uReportBalance,
+  uGlobals, uGeneralTicket, uReportShiftBalancePreview, uReportCurrencyFrame,
+  uReportCurrencyHistFrame;
+{$R *.dfm}
+
+const
+  LARGESCROLLDELTA = 300;
+  SMALLSCROLLDELTA = 8;
+  ZOOMFACTOR = 0.25;
+
+  { TBaseFrame1 }
+
+  // ##############################################################################
+
+procedure TReportPreview.AllButtonClick(Sender: TObject);
+  procedure Preview;
+  begin
+    Screen.Cursor := crHourGlass;
+    LoadParametres;
+    LoadFiles;
+    LoadData;
+    ShowReport;
+    Screen.Cursor := crDefault;
+  end;
+
+begin
+  with CustomPreview do
+  begin
+    case TSpeedButton(Sender).Tag of
+      0:
+        Print;
+      1:
+        PageSetupDlg;
+      2:
+        Export(PDFExport);
+      3:
+        Zoom := Zoom + ZOOMFACTOR;
+      4:
+        Zoom := Zoom - ZOOMFACTOR;
+      5:
+        Prior;
+      6:
+        Next;
+      7:
+        Preview;
+      8:
+        Zoom := 1.00;
+      9:
+        ZoomMode := zmPageWidth;
+      10:
+        ZoomMode := zmWholePage;
+    end;
+  end;
+end;
+
+// ##############################################################################
+
+constructor TReportPreview.Create(AOwner: TComponent);
+var
+  i, xTag: Integer;
+begin
+  inherited;
+  for i := 0 to ComponentCount - 1 do
+  begin
+    if Components[i] is TSpeedButton then
+    begin
+
+      TSpeedButton(Components[i]).Flat := True;
+
+      xTag := TSpeedButton(Components[i]).Tag;
+      if xTag > 7 then
+        IM16x16.GetBitmap(xTag - 8, TSpeedButton(Components[i]).Glyph)
+      else
+        IM32x32.GetBitmap(xTag, TSpeedButton(Components[i]).Glyph);
+    end;
+  end;
+
+  cxPrint.OnClick := AllButtonClick;
+  cxPageSetup.OnClick := AllButtonClick;
+  cxZoomIn.OnClick := AllButtonClick;
+  cxZoomOut.OnClick := AllButtonClick;
+  cxNormalPage.OnClick := AllButtonClick;
+  cxPageWidth.OnClick := AllButtonClick;
+  cxFullPage.OnClick := AllButtonClick;
+  cxPrevPage.OnClick := AllButtonClick;
+  cxNextPage.OnClick := AllButtonClick;
+  cxPreview.OnClick := AllButtonClick;
+  FRun := false;
+  Self.OnKeyDown := FrameKeyDown;
+end;
+
+// ##############################################################################
+
+procedure TReportPreview.CustomPreviewPageChanged(Sender: TfrxPreview;
+  PageNo: Integer);
+var
+  FirstPass: Boolean;
+begin
+  FirstPass := false;
+  if Sender.PreviewPages <> nil then
+    FirstPass := not Sender.PreviewPages.Engine.FinalPass;
+  if FirstPass and FRun then
+    StatusBar.Panels[0].Text := Format(' First Pass: page %d',
+      [Sender.PageCount])
+  else if Sender.PageCount > 0 then
+  begin
+    StatusBar.Panels[0].Text := Format(' Page %d of %d',
+      [PageNo, Sender.PageCount]);
+    if Sender.PageCount > 1 then
+    begin
+      cxNextPage.Enabled := PageNo < Sender.PageCount;
+      cxPrevPage.Enabled := PageNo > 1;
+    end;
+  end;
+end;
+
+// ##############################################################################
+destructor TReportPreview.Destroy;
+begin
+  ReportDataSet.DataSet := nil;
+  DataSet.Free;
+  inherited;
+end;
+
+// ##############################################################################
+
+procedure TReportPreview.FrameKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  with CustomPreview do
+  begin
+    case Key of
+      VK_UP:
+        Workspace.VertPosition := Workspace.VertPosition - SMALLSCROLLDELTA;
+      VK_DOWN:
+        Workspace.VertPosition := Workspace.VertPosition + SMALLSCROLLDELTA;
+      VK_LEFT:
+        Workspace.HorzPosition := Workspace.HorzPosition - SMALLSCROLLDELTA;
+      VK_RIGHT:
+        Workspace.HorzPosition := Workspace.HorzPosition + SMALLSCROLLDELTA;
+      VK_PRIOR:
+        if not(ssCtrl in Shift) then
+          Workspace.VertPosition := Workspace.VertPosition - LARGESCROLLDELTA;
+      VK_NEXT:
+        if not(ssCtrl in Shift) then
+          Workspace.VertPosition := Workspace.VertPosition + LARGESCROLLDELTA;
+      VK_HOME:
+        if ssCtrl in Shift then
+          PageNo := 1
+        else
+          Workspace.HorzPosition := 0;
+      VK_END:
+        if ssCtrl in Shift then
+          PageNo := PageCount
+        else
+          Workspace.HorzPosition := Workspace.HorzPage;
+    end;
+  end;
+end;
+
+// ##############################################################################
+
+procedure TReportPreview.FrameMouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  with CustomPreview do
+  begin
+    if PtInRect(ClientRect, ScreenToClient(MousePos)) then
+      MouseWheelScroll(WheelDelta, false, ssCtrl in Shift);
+  end;
+end;
+
+// ##############################################################################
+
+function TReportPreview.GetPrinterName: string;
+var
+  xDataSet: TResultHandle;
+  xQuery: string;
+begin
+  result := emptystr;
+  xQuery := ' select printername from tbl_ReportsPrinters where id_reports in '
+    + ' (Select id from tbl_reports where name=''%s'')';
+  xQuery := Format(xQuery, [GetReportName]);
+  xDataSet := TResultHandle.Create;
+  xDataSet.ClearResult;
+  xDataSet.Add(xQuery);
+  xDataSet.InvokeSQL;
+  if xDataSet.count > 0 then
+  begin
+    result := xDataSet.query.FieldByName('printername').AsString;
+  end;
+  xDataSet.ClearResult;
+  xDataSet.Free;
+end;
+
+// ##############################################################################
+// Do nadpisanie w klasach dziedzicz¹cych
+function TReportPreview.LoadData: Boolean;
+begin
+end;
+
+// ##############################################################################
+function TReportPreview.LoadFiles: Boolean;
+begin
+end;
+
+// ##############################################################################
+
+procedure TReportPreview.LoadParametres;
+var
+  xQuery: string;
+  xDataSet: TResultHandle;
+  i: Integer;
+begin
+  inherited;
+  xDataSet := TResultHandle.Create;
+
+  xQuery := 'Select * from tbl_session where Guid=''%s'' and name=''%s''';
+
+  xQuery := Format(xQuery, [SessionGuid, cParams_ctNumber]);
+
+  xDataSet.ClearResult;
+  xDataSet.Add(xQuery);
+  xDataSet.InvokeSQL;
+  xDataSet.first;
+  Fct_number := xDataSet.query.FieldByName('Values').AsString;
+  xDataSet.ClearResult;
+
+  xQuery := 'Select * from tbl_session where Guid=''%s'' and name=''%s''';
+
+  xQuery := Format(xQuery, [SessionGuid, cParams_idCashDesk]);
+  xDataSet := TResultHandle.Create;
+  xDataSet.ClearResult;
+  xDataSet.Add(xQuery);
+  xDataSet.InvokeSQL;
+  xDataSet.first;
+  FidCaskdesk := xDataSet.query.FieldByName('Values').AsString;
+  xDataSet.ClearResult;
+  xDataSet.Free;
+end;
+
+// ##############################################################################
+function TReportPreview.GetReportName: string;
+begin
+  result := emptystr;
+end;
+
+// ##############################################################################
+procedure TReportPreview.ReportProgress(Sender: TfrxReport;
+  ProgressType: TfrxProgressType; Progress: Integer);
+begin
+  inherited;
+  Application.ProcessMessages;
+end;
+
+// ##############################################################################
+
+procedure TReportPreview.ReportProgressStart(Sender: TfrxReport;
+  ProgressType: TfrxProgressType; Progress: Integer);
+begin
+  inherited;
+  FRun := True;
+end;
+
+// ##############################################################################
+
+procedure TReportPreview.ReportProgressStop(Sender: TfrxReport;
+  ProgressType: TfrxProgressType; Progress: Integer);
+var
+  i: Integer;
+begin
+  FRun := false;
+  for i := 0 to ComponentCount - 1 do
+  begin
+    if Components[i] is TSpeedButton then
+      with TSpeedButton(Components[i]) do
+        Enabled := not(Tag in [5, 6, 7]);
+  end;
+end;
+
+procedure TReportPreview.ShowReport;
+begin
+
+end;
+
+// ##############################################################################
+
+constructor TReportsPrinter.Create;
+begin
+  inherited;
+  FIdReport := ckeyNILL;
+  FidCashDesk := ckeyNILL;
+  Fct_number := emptystr;
+  FCopies := 0;
+  FQuietReport := nil;
+  FDataFrom := 0;
+  FDataTo := 0;
+end;
+
+// ##############################################################################
+
+function TReportsPrinter.CreateQuietReport: Boolean;
+begin
+  result := false;
+  if GetClassReports <> nil then
+  begin
+    FQuietReport := GetClassReports.createNew;
+    FQuietReport.GetReport;
+    result := True;
+  end;
+end;
+
+// ##############################################################################
+
+destructor TReportsPrinter.Destroy;
+begin
+  if assigned(FQuietReport) then
+    FQuietReport.Free;
+  inherited;
+end;
+
+// ##############################################################################
+
+function TReportsPrinter.GetClassReports: TclassReportQuiet;
+begin
+  result := nil;
+  case FIdReport of
+    cReportTicket:
+      result := TReportTicketQuiet;
+    cReportTransfer:
+      result := TReportTransferQuiet;
+    cReportGeneralTicket:
+      result := TReportTicketGeneralQuiet;
+    cReportShift:
+      result := TReportShiftQuiet;
+    cReportBalanceShifts:
+      result := TReportShiftBalanceQuiet;
+    cReportBalance:
+      result := TReportBalancePreview1;
+    cReportCurrency:
+      result := TReportCurrencyQuiet;
+    cReportCurrencyHist:
+      result := TReportCurrencyHistQuiet;
+  end;
+end;
+
+// ##############################################################################
+
+function TReportsPrinter.GetPrinterName: string;
+var
+  xDataSet: TResultHandle;
+  xQuery: string;
+begin
+  result := emptystr;
+  xQuery := ' select printername from tbl_ReportsPrinters where id_reports in '
+    + ' (Select id from tbl_reports where id=%s) and id_cd=%s and computer_name=''%s'''+
+    '  and User_name=''%s'' ';
+
+  xQuery := Format(xQuery, [intTostr(FIdReport), intTostr(FidCashDesk),
+  AnsiUpperCase(trim(frmmain.ComputerInfo.Identification.LocalComputerName)),
+  AnsiUpperCase(trim( frmMain.CurrentUserName)) ]);
+
+  xDataSet := TResultHandle.Create;
+  xDataSet.ClearResult;
+  xDataSet.Add(xQuery);
+  xDataSet.InvokeSQL;
+  if xDataSet.count > 0 then
+  begin
+    result := xDataSet.query.FieldByName('printername').AsString;
+  end;
+  xDataSet.ClearResult;
+  xDataSet.Free;
+end;
+
+
+
+// ##############################################################################
+
+procedure TReportsPrinter.PrintReport;
+var
+  xName: string;
+  i:integer;
+begin
+  SaveParametresToDataBase;
+  if CreateQuietReport then
+  begin
+    if assigned(FQuietReport) then
+    begin
+      if assigned(FQuietReport.Report) then
+      begin
+        xName := GetPrinterName;
+        if xName <> emptystr then
+        begin
+          FQuietReport.Report.PrintOptions.Printer := xName;
+        end;
+        FQuietReport.Report.PrintOptions.Copies :=1;
+        if xName <> emptystr then
+        begin
+          FQuietReport.Report.PrintOptions.ShowDialog := false;
+        end;
+        FQuietReport.Report.PrepareReport();
+        for I := 1 to FCopies+1 do begin
+           FQuietReport.Report.Print;
+        end;
+      end;
+    end;
+  end;
+end;
+
+// ##############################################################################
+
+procedure TReportsPrinter.SaveParametresToDataBase;
+var
+  xQuery: string;
+  xDataSet: TResultHandle;
+begin
+  xDataSet := TResultHandle.Create;
+  xQuery := 'Delete from tbl_session where guid=''%s'''; // and Name =''%s''';
+  xQuery := Format(xQuery, [SessionGuid]);
+  xDataSet.ClearResult;
+  xDataSet.Add(xQuery);
+  xDataSet.ExecuteSQL;
+  xDataSet.ClearResult;
+  if trim(Fct_number) <> emptystr then
+  begin
+    xQuery := 'Insert into tbl_session(Guid,Name,values) values(''%s'',''%s'',''%s'')';
+    xQuery := Format(xQuery, [SessionGuid, cParams_ctNumber, Fct_number]);
+    xDataSet.ClearResult;
+    xDataSet.Add(xQuery);
+    xDataSet.ExecuteSQL;
+    xDataSet.ClearResult;
+  end;
+
+  if FidCashDesk <> ckeyNILL then
+  begin
+    xQuery := 'Insert into tbl_session(Guid,Name,values) values(''%s'',''%s'',''%s'')';
+    xQuery := Format(xQuery, [SessionGuid, cParams_idCashDesk,
+      intTostr(FidCashDesk)]);
+    xDataSet.ClearResult;
+    xDataSet.Add(xQuery);
+    xDataSet.ExecuteSQL;
+    xDataSet.ClearResult;
+  end;
+
+  if FDataFrom <> 0 then
+  begin
+    xQuery := 'Insert into tbl_session(Guid,Name,values) values(''%s'',''%s'',''%s'')';
+    xQuery := Format(xQuery, [SessionGuid, cParams_dataFrom,
+      dateTimeToStr(FDataFrom)]);
+    xDataSet.ClearResult;
+    xDataSet.Add(xQuery);
+    xDataSet.ExecuteSQL;
+    xDataSet.ClearResult;
+  end;
+
+  if FDataTo <> 0 then
+  begin
+    xQuery := 'Insert into tbl_session(Guid,Name,values) values(''%s'',''%s'',''%s'')';
+    xQuery := Format(xQuery, [SessionGuid, cParams_dataTo,
+      dateTimeToStr(FDataTo)]);
+    xDataSet.ClearResult;
+    xDataSet.Add(xQuery);
+    xDataSet.ExecuteSQL;
+    xDataSet.ClearResult;
+  end;
+  xDataSet.Free;
+
+end;
+
+// ##############################################################################
+
+{ TReportQuiet }
+
+constructor TReportQuiet.createNew;
+begin
+  inherited Create;
+end;
+
+destructor TReportQuiet.Destroy;
+var
+  xExec: TResultHandle;
+  xQuery: string;
+begin
+  xExec := TResultHandle.Create;
+  xQuery := 'Delete from tbl_session where guid=''%s'''; // and Name =''%s''';
+  xQuery := Format(xQuery, [SessionGuid]);
+  xExec.ClearResult;
+  xExec.Add(xQuery);
+  xExec.ExecuteSQL;
+  xExec.ClearResult;
+  xExec.Free;
+  inherited;
+end;
+
+procedure TReportQuiet.GetReport;
+begin
+
+end;
+
+procedure TReportQuiet.Print;
+begin
+
+end;
+
+procedure TReportQuiet.SaveParametresToDataBase;
+begin
+end;
+
+end.

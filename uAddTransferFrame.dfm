@@ -1,0 +1,2 @@
+inherited AddTransferFrame: TAddTransferFrame
+end

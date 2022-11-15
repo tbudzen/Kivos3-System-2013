@@ -1,0 +1,2 @@
+inherited MultiplyTransactionsFrame: TMultiplyTransactionsFrame
+end

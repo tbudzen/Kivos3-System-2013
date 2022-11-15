@@ -1,0 +1,731 @@
+inherited CashShortCutManager: TCashShortCutManager
+  object PageControl1: TPageControl
+    Left = 0
+    Top = 0
+    Width = 908
+    Height = 611
+    ActivePage = TabSheet_ShortCutList
+    Align = alClient
+    OwnerDraw = True
+    TabOrder = 0
+    object TabSheet_ShortCutList: TTabSheet
+      Caption = 'List of shortCut'
+      object cxGrid7: TcxGrid
+        Left = 0
+        Top = 41
+        Width = 900
+        Height = 487
+        Align = alClient
+        TabOrder = 0
+        LookAndFeel.Kind = lfFlat
+        LookAndFeel.NativeStyle = True
+        LookAndFeel.SkinName = 'Foggy'
+        object cxGridDBTableView_ListValues: TcxGridDBTableView
+          Navigator.Visible = True
+          DataController.DataSource = PgDataSource_ListOfShortCut
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = '### ### ### ### ##0.00'
+              Kind = skSum
+              FieldName = 'amount_chf'
+            end>
+          DataController.Summary.SummaryGroups = <>
+          OptionsCustomize.ColumnMoving = False
+          OptionsData.Editing = False
+          OptionsView.CellAutoHeight = True
+          OptionsView.ColumnAutoWidth = True
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          OptionsView.IndicatorWidth = 24
+          object cxGridDBTableView_ListValuesColumn_id: TcxGridDBColumn
+            DataBinding.FieldName = 'id'
+            Visible = False
+          end
+          object cxGridDBTableView_ListValuesCashDesk: TcxGridDBColumn
+            Caption = 'Cashdesk'
+            DataBinding.FieldName = 'cd_name'
+          end
+          object cxGridDBTableView_ListValues_Labels: TcxGridDBColumn
+            Caption = 'Labels'
+            DataBinding.FieldName = 'labels'
+          end
+          object cxGridDBTableView_ListValues_Transaction: TcxGridDBColumn
+            Caption = 'Transaction'
+            DataBinding.FieldName = 'transname'
+          end
+          object cxGridDBTableView_ListValues_Account: TcxGridDBColumn
+            Caption = 'Account'
+            DataBinding.FieldName = 'name'
+          end
+          object cxGridDBTableView_ListValuesColumn_Direction: TcxGridDBColumn
+            Caption = 'Direction'
+            DataBinding.FieldName = 'dir'
+          end
+          object cxGridDBTableView_active: TcxGridDBColumn
+            Caption = 'Active'
+            DataBinding.FieldName = 'is_active'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+          end
+          object cxGridDBTableView_Multiple: TcxGridDBColumn
+            Caption = 'Multiple?'
+            DataBinding.FieldName = 'is_multiple'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+          end
+        end
+        object cxGridLevel6: TcxGridLevel
+          GridView = cxGridDBTableView_ListValues
+        end
+      end
+      object Panel_Buttons: TPanel
+        Left = 0
+        Top = 528
+        Width = 900
+        Height = 55
+        Align = alBottom
+        TabOrder = 1
+        object btnAdd: TcxButton
+          Left = 4
+          Top = 6
+          Width = 113
+          Height = 43
+          Cursor = crHandPoint
+          Caption = 'Add'
+          LookAndFeel.NativeStyle = False
+          LookAndFeel.SkinName = 'Foggy'
+          TabOrder = 0
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Segoe UI Semibold'
+          Font.Style = []
+          ParentFont = False
+          OnClick = btnAddClick
+        end
+        object btnModify: TcxButton
+          Left = 123
+          Top = 6
+          Width = 113
+          Height = 43
+          Cursor = crHandPoint
+          Caption = 'Modify'
+          LookAndFeel.NativeStyle = False
+          LookAndFeel.SkinName = 'Foggy'
+          TabOrder = 1
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Segoe UI Semibold'
+          Font.Style = []
+          ParentFont = False
+          OnClick = btnModifyClick
+        end
+        object btnDelete: TcxButton
+          Left = 242
+          Top = 6
+          Width = 113
+          Height = 43
+          Cursor = crHandPoint
+          Caption = 'Delete'
+          LookAndFeel.NativeStyle = False
+          LookAndFeel.SkinName = 'Foggy'
+          TabOrder = 2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Segoe UI Semibold'
+          Font.Style = []
+          ParentFont = False
+          OnClick = btnDeleteClick
+        end
+      end
+      object Panel_Top: TPanel
+        Left = 0
+        Top = 0
+        Width = 900
+        Height = 41
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 2
+        object cxLabel9: TcxLabel
+          Left = 3
+          Top = 5
+          AutoSize = False
+          Caption = 'Select cashdesk:'
+          ParentColor = False
+          ParentFont = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -20
+          Style.Font.Name = 'Segoe UI Semibold'
+          Style.Font.Style = []
+          Style.TextStyle = []
+          Style.IsFontAssigned = True
+          Transparent = True
+          Height = 33
+          Width = 158
+        end
+        object cbCashdesk: TcxDBLookupComboBox
+          Left = 159
+          Top = 1
+          AutoSize = False
+          DataBinding.DataField = 'id'
+          DataBinding.DataSource = PgDataSource8
+          ParentFont = False
+          Properties.Alignment.Horz = taCenter
+          Properties.DropDownListStyle = lsFixedList
+          Properties.DropDownRows = 20
+          Properties.ImmediatePost = True
+          Properties.KeyFieldNames = 'id'
+          Properties.ListColumns = <
+            item
+              MinWidth = 0
+              Width = 0
+              FieldName = 'id'
+            end
+            item
+              SortOrder = soAscending
+              FieldName = 'cd_name'
+            end>
+          Properties.ListFieldIndex = 1
+          Properties.ListOptions.ColumnSorting = False
+          Properties.ListOptions.ShowHeader = False
+          Properties.ListSource = PgDataSource_cashdesk
+          Properties.ReadOnly = False
+          Properties.OnChange = cbCashdeskPropertiesChange
+          Style.BorderStyle = ebsOffice11
+          Style.Color = clBtnFace
+          Style.Edges = [bLeft, bTop, bRight, bBottom]
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -20
+          Style.Font.Name = 'Segoe UI Semibold'
+          Style.Font.Style = []
+          Style.HotTrack = True
+          Style.LookAndFeel.Kind = lfOffice11
+          Style.LookAndFeel.NativeStyle = False
+          Style.LookAndFeel.SkinName = 'Foggy'
+          Style.Shadow = False
+          Style.ButtonStyle = btsDefault
+          Style.ButtonTransparency = ebtNone
+          Style.IsFontAssigned = True
+          StyleDisabled.LookAndFeel.Kind = lfOffice11
+          StyleDisabled.LookAndFeel.NativeStyle = False
+          StyleDisabled.LookAndFeel.SkinName = 'Foggy'
+          StyleFocused.LookAndFeel.Kind = lfOffice11
+          StyleFocused.LookAndFeel.NativeStyle = False
+          StyleFocused.LookAndFeel.SkinName = 'Foggy'
+          StyleHot.LookAndFeel.Kind = lfOffice11
+          StyleHot.LookAndFeel.NativeStyle = False
+          StyleHot.LookAndFeel.SkinName = 'Foggy'
+          TabOrder = 1
+          Height = 36
+          Width = 288
+        end
+      end
+    end
+    object TabSheet_DetailsShortCut: TTabSheet
+      Caption = 'Shortcut'
+      ImageIndex = 1
+      object cxLabel46: TcxLabel
+        Left = 20
+        Top = 3
+        AutoSize = False
+        Caption = 'Transaction shortcut'
+        ParentColor = False
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = [fsBold]
+        Style.IsFontAssigned = True
+        Transparent = True
+        Height = 19
+        Width = 149
+      end
+      object cxCheckBox_Active: TcxCheckBox
+        Left = 20
+        Top = 28
+        Caption = 'Active ?'
+        ParentBackground = False
+        ParentColor = False
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = []
+        Style.LookAndFeel.NativeStyle = False
+        Style.LookAndFeel.SkinName = 'Caramel'
+        Style.IsFontAssigned = True
+        StyleDisabled.LookAndFeel.NativeStyle = False
+        StyleDisabled.LookAndFeel.SkinName = 'Caramel'
+        StyleFocused.LookAndFeel.NativeStyle = False
+        StyleFocused.LookAndFeel.SkinName = 'Caramel'
+        StyleHot.LookAndFeel.NativeStyle = False
+        StyleHot.LookAndFeel.SkinName = 'Caramel'
+        TabOrder = 1
+        Transparent = True
+        Width = 69
+      end
+      object cxLabel14: TcxLabel
+        Left = 63
+        Top = 53
+        Caption = 'Label:'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = []
+        Style.IsFontAssigned = True
+        Transparent = True
+      end
+      object cxTextEdit_Label: TcxTextEdit
+        Left = 107
+        Top = 49
+        ParentFont = False
+        Properties.MaxLength = 0
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = []
+        Style.LookAndFeel.NativeStyle = False
+        Style.LookAndFeel.SkinName = 'Caramel'
+        Style.IsFontAssigned = True
+        StyleDisabled.LookAndFeel.NativeStyle = False
+        StyleDisabled.LookAndFeel.SkinName = 'Caramel'
+        StyleFocused.LookAndFeel.NativeStyle = False
+        StyleFocused.LookAndFeel.SkinName = 'Caramel'
+        StyleHot.LookAndFeel.NativeStyle = False
+        StyleHot.LookAndFeel.SkinName = 'Caramel'
+        TabOrder = 3
+        Width = 270
+      end
+      object cxLabel30: TcxLabel
+        Left = 24
+        Top = 112
+        AutoSize = False
+        Caption = 'Transaction:'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = []
+        Style.IsFontAssigned = True
+        Transparent = True
+        Height = 19
+        Width = 77
+      end
+      object cxDBLookupComboBox_Trans: TcxDBLookupComboBox
+        Left = 107
+        Top = 108
+        ParentFont = False
+        Properties.ListColumns = <>
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = []
+        Style.LookAndFeel.NativeStyle = False
+        Style.LookAndFeel.SkinName = 'Caramel'
+        Style.IsFontAssigned = True
+        StyleDisabled.LookAndFeel.NativeStyle = False
+        StyleDisabled.LookAndFeel.SkinName = 'Caramel'
+        StyleFocused.LookAndFeel.NativeStyle = False
+        StyleFocused.LookAndFeel.SkinName = 'Caramel'
+        StyleHot.LookAndFeel.NativeStyle = False
+        StyleHot.LookAndFeel.SkinName = 'Caramel'
+        TabOrder = 5
+        Width = 270
+      end
+      object cxCheckBox_Multiple: TcxCheckBox
+        Left = 20
+        Top = 78
+        Caption = 'Multiple ?'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = []
+        Style.LookAndFeel.NativeStyle = False
+        Style.LookAndFeel.SkinName = 'Caramel'
+        Style.IsFontAssigned = True
+        StyleDisabled.LookAndFeel.NativeStyle = False
+        StyleDisabled.LookAndFeel.SkinName = 'Caramel'
+        StyleFocused.LookAndFeel.NativeStyle = False
+        StyleFocused.LookAndFeel.SkinName = 'Caramel'
+        StyleHot.LookAndFeel.NativeStyle = False
+        StyleHot.LookAndFeel.SkinName = 'Caramel'
+        TabOrder = 6
+        Transparent = True
+        Width = 81
+      end
+      object ComboBox_Direction: TJvComboBox
+        Left = 107
+        Top = 166
+        Width = 46
+        Height = 21
+        ItemHeight = 13
+        TabOrder = 7
+        Text = '1'
+        Items.Strings = (
+          '1'
+          '2')
+        ItemIndex = 0
+      end
+      object cxLabel_accounts: TcxLabel
+        Left = 52
+        Top = 139
+        AutoSize = False
+        Caption = 'Account:'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = []
+        Style.IsFontAssigned = True
+        Transparent = True
+        Height = 19
+        Width = 49
+      end
+      object cxDBLookupCombo_Accounts: TcxDBLookupComboBox
+        Left = 107
+        Top = 137
+        ParentFont = False
+        Properties.ListColumns = <>
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = []
+        Style.LookAndFeel.NativeStyle = False
+        Style.LookAndFeel.SkinName = 'Caramel'
+        Style.IsFontAssigned = True
+        StyleDisabled.LookAndFeel.NativeStyle = False
+        StyleDisabled.LookAndFeel.SkinName = 'Caramel'
+        StyleFocused.LookAndFeel.NativeStyle = False
+        StyleFocused.LookAndFeel.SkinName = 'Caramel'
+        StyleHot.LookAndFeel.NativeStyle = False
+        StyleHot.LookAndFeel.SkinName = 'Caramel'
+        TabOrder = 9
+        Width = 270
+      end
+      object cxLabel_Direction: TcxLabel
+        Left = 36
+        Top = 166
+        AutoSize = False
+        Caption = 'Direction:'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = []
+        Style.IsFontAssigned = True
+        Transparent = True
+        Height = 19
+        Width = 65
+      end
+      object Panel1: TPanel
+        Left = 0
+        Top = 536
+        Width = 900
+        Height = 47
+        Align = alBottom
+        BevelOuter = bvNone
+        TabOrder = 11
+        object cxButton_Save: TcxButton
+          Left = 652
+          Top = 3
+          Width = 113
+          Height = 43
+          Cursor = crHandPoint
+          Caption = 'Save'
+          LookAndFeel.NativeStyle = False
+          LookAndFeel.SkinName = 'Foggy'
+          TabOrder = 0
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Segoe UI Semibold'
+          Font.Style = []
+          ParentFont = False
+          OnClick = cxButton_SaveClick
+        end
+        object cxButtonCancel: TcxButton
+          Left = 771
+          Top = 3
+          Width = 113
+          Height = 43
+          Cursor = crHandPoint
+          Caption = 'Cancel'
+          LookAndFeel.NativeStyle = False
+          LookAndFeel.SkinName = 'Foggy'
+          TabOrder = 1
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Segoe UI Semibold'
+          Font.Style = []
+          ParentFont = False
+          OnClick = cxButtonCancelClick
+        end
+      end
+      object cxLabel_DefaultValues: TcxLabel
+        Left = 24
+        Top = 233
+        AutoSize = False
+        Caption = 'Default values'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = []
+        Style.IsFontAssigned = True
+        Transparent = True
+        Visible = False
+        Height = 19
+        Width = 86
+      end
+      object cxGrid_Values: TcxGrid
+        Left = 24
+        Top = 258
+        Width = 669
+        Height = 290
+        TabOrder = 13
+        Visible = False
+        LookAndFeel.Kind = lfFlat
+        LookAndFeel.NativeStyle = True
+        LookAndFeel.SkinName = 'Foggy'
+        object cxGridDBTableView1: TcxGridDBTableView
+          Navigator.Visible = True
+          DataController.DataSource = PgDataSource_Values
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = '### ### ### ### ##0.00'
+              Kind = skSum
+              FieldName = 'amount_chf'
+            end>
+          DataController.Summary.SummaryGroups = <>
+          OptionsCustomize.ColumnMoving = False
+          OptionsView.CellAutoHeight = True
+          OptionsView.ColumnAutoWidth = True
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          OptionsView.IndicatorWidth = 24
+          object cxGridDBTableView1_id: TcxGridDBColumn
+            DataBinding.FieldName = 'id'
+            Visible = False
+            Options.Editing = False
+          end
+          object cxGridDBTableView1_Name: TcxGridDBColumn
+            Caption = 'Name'
+            DataBinding.FieldName = 'category_name'
+            Options.Editing = False
+            SortIndex = 0
+            SortOrder = soAscending
+          end
+          object cxGridDBTableView_curr: TcxGridDBColumn
+            Caption = 'Curr'
+            DataBinding.FieldName = 'currency_symbol'
+            Options.Editing = False
+          end
+          object cxGridDBTableView_nr: TcxGridDBColumn
+            Caption = 'Nr'
+            DataBinding.FieldName = 'nr'
+            OnCustomDrawCell = cxGridDBTableView_nrCustomDrawCell
+          end
+          object cxGridDBTableView1Column1: TcxGridDBColumn
+            Caption = 'Multiplier'
+            DataBinding.FieldName = 'multiplier'
+            Options.Editing = False
+            SortIndex = 1
+            SortOrder = soDescending
+          end
+        end
+        object cxGridLevel1: TcxGridLevel
+          GridView = cxGridDBTableView1
+        end
+      end
+      object edAmountOUT: TcxTextEdit
+        Left = 107
+        Top = 192
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -19
+        Style.Font.Name = 'Tahoma'
+        Style.Font.Style = []
+        Style.LookAndFeel.NativeStyle = False
+        Style.LookAndFeel.SkinName = 'DevExpressStyle'
+        Style.IsFontAssigned = True
+        StyleDisabled.LookAndFeel.NativeStyle = False
+        StyleDisabled.LookAndFeel.SkinName = 'DevExpressStyle'
+        StyleFocused.LookAndFeel.NativeStyle = False
+        StyleFocused.LookAndFeel.SkinName = 'DevExpressStyle'
+        StyleHot.LookAndFeel.NativeStyle = False
+        StyleHot.LookAndFeel.SkinName = 'DevExpressStyle'
+        TabOrder = 14
+        Visible = False
+        Width = 102
+      end
+      object cxLabel_AmountOut: TcxLabel
+        Left = 37
+        Top = 198
+        AutoSize = False
+        Caption = 'Amount out'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = []
+        Style.IsFontAssigned = True
+        Transparent = True
+        Visible = False
+        Height = 19
+        Width = 65
+      end
+      object cxLabel_AoumntIn: TcxLabel
+        Left = 221
+        Top = 198
+        AutoSize = False
+        Caption = 'Amount in'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -12
+        Style.Font.Name = 'Segoe UI'
+        Style.Font.Style = []
+        Style.IsFontAssigned = True
+        Transparent = True
+        Visible = False
+        Height = 19
+        Width = 76
+      end
+      object edAmountIn: TcxTextEdit
+        Left = 292
+        Top = 192
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = -19
+        Style.Font.Name = 'Tahoma'
+        Style.Font.Style = []
+        Style.LookAndFeel.NativeStyle = False
+        Style.LookAndFeel.SkinName = 'DevExpressStyle'
+        Style.IsFontAssigned = True
+        StyleDisabled.LookAndFeel.NativeStyle = False
+        StyleDisabled.LookAndFeel.SkinName = 'DevExpressStyle'
+        StyleFocused.LookAndFeel.NativeStyle = False
+        StyleFocused.LookAndFeel.SkinName = 'DevExpressStyle'
+        StyleHot.LookAndFeel.NativeStyle = False
+        StyleHot.LookAndFeel.SkinName = 'DevExpressStyle'
+        TabOrder = 17
+        Visible = False
+        Width = 102
+      end
+    end
+  end
+  object PgQuerylistOfShortCut: TPgQuery
+    Connection = frmDatabase.KivosConnection
+    SQL.Strings = (
+      'select tbl_shortcut_user.id, is_active, is_multiple, '
+      
+        'case when is_multiple=1 then t2.name else t1.name end as transNa' +
+        'me,'
+      'tbl_cd.cd_name,labels,  '
+      
+        'case when tbl_shortcut_user.direction =1 then '#39'IN'#39' else '#39'OUT'#39' en' +
+        'd as dir,'
+      'tbl_accounts.name'
+      'from tbl_shortcut_user'
+      
+        'left join  tbl_cd_transactions cdt on cdt.id_Transaction=tbl_sho' +
+        'rtcut_user.id_cd_transaction'
+      'left join tbl_transactions as t1 on cdt.id_transaction=t1.id'
+      
+        'left join tbl_cd_multiple_transactions  cdtm on cdtm.id_multiple' +
+        '_transaction=tbl_shortcut_user.id_cd_transaction'
+      
+        'left join tbl_transactions as t2 on cdtm.id_multiple_transaction' +
+        '=t2.id'
+      'left join tbl_cd on tbl_shortcut_user.id_cashdesk=tbl_cd.id'
+      
+        'left join tbl_accounts on tbl_accounts.account_id  =cast(tbl_sho' +
+        'rtcut_user.id_account as varchar)'
+      
+        'group by tbl_shortcut_user.id, is_active, is_multiple,t2.name,t1' +
+        '.name,tbl_cd.cd_name,labels,tbl_shortcut_user.direction,tbl_acco' +
+        'unts.name'
+      'order by tbl_cd.cd_name')
+    ReadOnly = True
+    Options.AutoPrepare = True
+    Options.CacheCalcFields = True
+    Left = 592
+    Top = 240
+  end
+  object PgDataSource_ListOfShortCut: TPgDataSource
+    DataSet = PgQuerylistOfShortCut
+    Left = 448
+    Top = 168
+  end
+  object PgDataSource_cashdesk: TPgDataSource
+    DataSet = PgQuery_CashDesk
+    Left = 664
+    Top = 24
+  end
+  object PgQuery_CashDesk: TPgQuery
+    Connection = frmDatabase.KivosConnection
+    SQL.Strings = (
+      'select * from tbl_cd where 0 = 1')
+    Left = 528
+    Top = 24
+  end
+  object PgDataSource8: TPgDataSource
+    DataSet = PgQuery6
+    Left = 616
+    Top = 96
+  end
+  object PgQuery6: TPgQuery
+    Connection = frmDatabase.KivosConnection
+    SQL.Strings = (
+      'select '
+      '  id, cd_name, id_workstation, description, account_id'
+      'from '
+      '  tbl_cd'
+      'where'
+      '  0 = 1')
+    Left = 688
+    Top = 96
+  end
+  object PgDataSource_Values: TPgDataSource
+    DataSet = PgQuery_Values
+    Left = 648
+    Top = 448
+  end
+  object PgQuery_Values: TPgQuery
+    Connection = frmDatabase.KivosConnection
+    SQL.Strings = (
+      
+        'Select id, nr,category_name, currency_symbol, multiplier  from t' +
+        'bl_shortcut_user_values'
+      'where id=-1')
+    Left = 776
+    Top = 448
+  end
+end

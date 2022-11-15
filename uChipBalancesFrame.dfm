@@ -1,0 +1,2 @@
+inherited ChipBalancesFrame: TChipBalancesFrame
+end

@@ -1,0 +1,2 @@
+inherited UsersGroupsAssignmentFrame: TUsersGroupsAssignmentFrame
+end

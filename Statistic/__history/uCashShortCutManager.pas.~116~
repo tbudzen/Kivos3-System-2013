@@ -1,0 +1,907 @@
+unit uCashShortCutManager;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uBaseFrame, Vcl.ComCtrls, cxGraphics,
+  cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxStyles,
+  dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel,
+  dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
+  dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinOffice2010Black, dxSkinOffice2010Blue, dxSkinOffice2010Silver,
+  dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus,
+  dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine, dxSkinVS2010,
+  dxSkinWhiteprint, dxSkinXmas2008Blue, dxSkinscxPCPainter, cxCustomData,
+  cxFilter, cxData, cxDataStorage, cxEdit, Data.DB, cxDBData, cxCalc,
+  cxContainer, Vcl.StdCtrls, JvExStdCtrls, JvCombobox, cxMaskEdit,
+  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit,
+  cxCheckBox, cxLabel, Vcl.ExtCtrls, cxGridLevel, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid,
+  Vcl.Menus, cxButtons, DBAccess, PgAccess, MemDS, uDataBase;
+
+type
+  TCashShortCutManager = class(TBaseFrame)
+    PageControl1: TPageControl;
+    TabSheet_ShortCutList: TTabSheet;
+    TabSheet_DetailsShortCut: TTabSheet;
+    cxGrid7: TcxGrid;
+    cxGridDBTableView_ListValues: TcxGridDBTableView;
+    cxGridLevel6: TcxGridLevel;
+    Panel_Buttons: TPanel;
+    btnAdd: TcxButton;
+    btnModify: TcxButton;
+    btnDelete: TcxButton;
+    PgQuerylistOfShortCut: TPgQuery;
+    PgDataSource_ListOfShortCut: TPgDataSource;
+    cxLabel46: TcxLabel;
+    cxCheckBox_Active: TcxCheckBox;
+    cxLabel14: TcxLabel;
+    cxTextEdit_Label: TcxTextEdit;
+    cxLabel30: TcxLabel;
+    cxDBLookupComboBox_Trans: TcxDBLookupComboBox;
+    cxCheckBox_Multiple: TcxCheckBox;
+    ComboBox_Direction: TJvComboBox;
+    cxLabel_accounts: TcxLabel;
+    cxDBLookupCombo_Accounts: TcxDBLookupComboBox;
+    cxLabel_Direction: TcxLabel;
+    Panel_Top: TPanel;
+    cxLabel9: TcxLabel;
+    cbCashdesk: TcxDBLookupComboBox;
+    cxGridDBTableView_ListValuesColumn_id: TcxGridDBColumn;
+    cxGridDBTableView_ListValuesCashDesk: TcxGridDBColumn;
+    cxGridDBTableView_ListValues_Transaction: TcxGridDBColumn;
+    cxGridDBTableView_ListValues_Labels: TcxGridDBColumn;
+    cxGridDBTableView_ListValues_Account: TcxGridDBColumn;
+    cxGridDBTableView_ListValuesColumn_Direction: TcxGridDBColumn;
+    cxGridDBTableView_active: TcxGridDBColumn;
+    cxGridDBTableView_Multiple: TcxGridDBColumn;
+    PgDataSource_cashdesk: TPgDataSource;
+    PgQuery_CashDesk: TPgQuery;
+    PgDataSource8: TPgDataSource;
+    PgQuery6: TPgQuery;
+    Panel1: TPanel;
+    cxButton_Save: TcxButton;
+    cxButtonCancel: TcxButton;
+    cxLabel_DefaultValues: TcxLabel;
+    cxGrid_Values: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridLevel1: TcxGridLevel;
+    PgDataSource_Values: TPgDataSource;
+    PgQuery_Values: TPgQuery;
+    cxGridDBTableView1_id: TcxGridDBColumn;
+    cxGridDBTableView1_Name: TcxGridDBColumn;
+    cxGridDBTableView_curr: TcxGridDBColumn;
+    cxGridDBTableView_nr: TcxGridDBColumn;
+    cxGridDBTableView1Column1: TcxGridDBColumn;
+    edAmountOUT: TcxTextEdit;
+    cxLabel_AmountOut: TcxLabel;
+    cxLabel_AoumntIn: TcxLabel;
+    edAmountIn: TcxTextEdit;
+    procedure btnAddClick(Sender: TObject);
+    procedure cxButtonCancelClick(Sender: TObject);
+    procedure cbCashdeskPropertiesChange(Sender: TObject);
+    procedure cxButton_SaveClick(Sender: TObject);
+    procedure cxGridDBTableView_nrCustomDrawCell(Sender: TcxCustomGridTableView;
+      ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
+      var ADone: Boolean);
+    procedure btnModifyClick(Sender: TObject);
+    procedure btnDeleteClick(Sender: TObject);
+  private
+    { Private declarations }
+    FListTransactions: TResultHandle;
+    FListMultipleTransactions: TResultHandle;
+    FTransactions: TResultHandle;
+    procedure visibleAccounts(Avisible: Boolean);
+    procedure visibleDirection(Avisible: Boolean);
+    procedure RefreshListShortCut;
+    procedure OnClick_Multiple(Asender: TObject);
+    procedure Onclick_Transactions(Asender: TObject);
+    procedure InitializeComponents;
+    procedure PrepareNewValues;
+    procedure DeleteNewValues;
+    function CheckSave: Boolean;
+  public
+    FidUser: string;
+    Fid: string;
+    FEdit: Boolean;
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure InitializeEditor;
+  end;
+
+var
+  CashShortCutManager: TCashShortCutManager;
+
+implementation
+
+uses uSystem, uGlobals, uFrmMain, cxGridDBDataDefinitions;
+{$R *.dfm}
+
+// #########################################################################################################
+procedure TCashShortCutManager.btnAddClick(Sender: TObject);
+begin
+  inherited;
+  Fid := 'NULL';
+  FEdit := false;
+  InitializeEditor;
+  InitializeComponents;
+  PageControl1.ActivePage := TabSheet_DetailsShortCut;
+end;
+// #########################################################################################################
+
+procedure TCashShortCutManager.cbCashdeskPropertiesChange(Sender: TObject);
+begin
+  inherited;
+  RefreshListShortCut;
+end;
+
+// #########################################################################################################
+
+constructor TCashShortCutManager.Create(AOwner: TComponent);
+var
+  xQuery: string;
+begin
+  inherited;
+  Fid := 'NULL';
+  FidUser := frmMain.CurrentUserId;
+  FListTransactions := TResultHandle.Create;
+  FListMultipleTransactions := TResultHandle.Create;
+  FTransactions := TResultHandle.Create;
+  PgQuery6.SQL.Clear();
+  PgQuery6.SQL.Add('select ' + '  cd.* ' + 'from ' + '  tbl_cd as cd ' +
+    '  left join tbl_cd_workstations as cdw on cd.id = cdw.id_cashdesk ' +
+    '  left join tbl_workstations as w on cdw.id_workstation = w.id ' + 'where '
+    + '  w.system_name = ''' + frmMain.ComputerInfo.Identification.
+    LocalComputerName + '''');
+  PgQuery6.Active := false;
+  PgQuery6.Active := True;
+
+  PgQuery_CashDesk.SQL.Clear();
+  PgQuery_CashDesk.SQL.Add('select ' + '  cd.* ' + 'from ' + '  tbl_cd as cd ' +
+    '  left join tbl_cd_workstations as cdw on cd.id = cdw.id_cashdesk ' +
+    '  left join tbl_workstations as w on cdw.id_workstation = w.id ' + 'where '
+    + '  w.system_name = ''' + frmMain.ComputerInfo.Identification.
+    LocalComputerName + '''');
+  PgQuery_CashDesk.Active := false;
+  PgQuery_CashDesk.Active := True;
+  if PgQuery_CashDesk.RecordCount > 0 then
+  begin
+    cbCashdesk.EditValue := 0;
+  end;
+
+  TabSheet_ShortCutList.TabVisible := false;
+  TabSheet_DetailsShortCut.TabVisible := false;
+  PageControl1.ActivePage := TabSheet_ShortCutList;
+
+  RefreshListShortCut;
+  cxCheckBox_Multiple.OnClick := OnClick_Multiple;
+  cxDBLookupComboBox_Trans.OnClick := Onclick_Transactions;
+  FEdit := false;
+end;
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.cxButtonCancelClick(Sender: TObject);
+begin
+  inherited;
+  if NOT FEdit then
+  begin
+    DeleteNewValues;
+  end;
+  PageControl1.ActivePage := TabSheet_ShortCutList;
+end;
+
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.DeleteNewValues;
+var
+  xQuery: string;
+  xDataSet: TResultHandle;
+  xOk: Boolean;
+begin
+  if Fid <> 'NULL' then
+  begin
+    xOk := True;
+    xDataSet := TResultHandle.Create;
+    xDataSet.Query.Connection.StartTransaction;
+    xQuery := ' delete from tbl_shortcut_user where id=%s';
+    xQuery := format(xQuery, [stringToDataBAse(Fid)]);
+    xDataSet.Add(xQuery);
+    xOk := xDataSet.ExecuteSQL;
+
+    if xOk then
+    begin
+      xQuery := ' delete from tbl_shortcut_user_values where id_shortcut_user =%s';
+      xQuery := format(xQuery, [stringToDataBAse(Fid)]);
+      xDataSet.ClearResult;
+      xDataSet.Add(xQuery);
+      xOk := xDataSet.ExecuteSQL;
+    end;
+    if xOk then
+    begin
+      xDataSet.Query.Connection.Commit;
+    end
+    else
+    begin
+      xDataSet.Query.Connection.Rollback;
+    end;
+  end;
+end;
+
+// #########################################################################################################
+
+destructor TCashShortCutManager.Destroy;
+begin
+  if Assigned(FListTransactions) then
+  begin
+    FListTransactions.ClearResult;
+    FreeAndNil(FListTransactions);
+  end;
+  if Assigned(FListMultipleTransactions) then
+  begin
+    FListMultipleTransactions.ClearResult;
+    FreeAndNil(FListMultipleTransactions);
+  end;
+  inherited;
+end;
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.visibleAccounts(Avisible: Boolean);
+begin
+  cxLabel_accounts.visible := Avisible;
+  cxDBLookupCombo_Accounts.visible := Avisible;
+end;
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.visibleDirection(Avisible: Boolean);
+begin
+  cxLabel_Direction.visible := Avisible;
+  ComboBox_Direction.visible := Avisible;
+end;
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.InitializeComponents;
+begin
+  cxCheckBox_Active.Checked := True;
+  cxCheckBox_Multiple.Checked := false;
+  cxTextEdit_Label.Text := EmptyStr;
+  cxDBLookupComboBox_Trans.EditValue := 0;
+  cxDBLookupCombo_Accounts.EditValue := 0;
+  ComboBox_Direction.ItemIndex := -1;
+  cxLabel_DefaultValues.visible := false;
+  cxGrid_Values.visible := false;
+  cxLabel_AmountOut.visible := false;
+  edAmountOUT.visible := false;
+  cxLabel_AoumntIn.visible := false;
+  edAmountIn.visible := false;
+  edAmountOUT.Text:= EmptyStr;
+  edAmountIn.Text:= EmptyStr;
+end;
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.InitializeEditor;
+var
+  xQuery: string;
+begin
+
+  FListTransactions.ClearResult;
+  FListMultipleTransactions.ClearResult;
+
+  // Zwyk³e transakcje
+  xQuery := 'select * from ( ' +
+    'select 0 as id, ''Select transaction'' as name ' + 'union ' +
+    'select cdt.id_transaction as id, t.name ' +
+    'from tbl_cd_transactions as cdt ' +
+    'left join tbl_transactions as t on cdt.id_transaction = t.id ' + 'where ' +
+    '  cdt.id_cashdesk = ' + stringToDataBAse(VarToStr(cbCashdesk.EditValue)) +
+    ') as t order by id asc ';
+
+  FListTransactions.ClearResult;
+  FListTransactions.Add(xQuery);
+  FListTransactions.InvokeSQL;
+
+  // Multiple
+  xQuery := 'select 0 as id, ''Select transaction'' as name ' + 'union ' +
+    'select cdt.id_multiple_transaction as id, t.name ' +
+    'from tbl_cd_multiple_transactions as cdt ' +
+    'left join tbl_multiple_transactions as t on cdt.id_multiple_transaction = t.id '
+    + 'where cdt.id_cashdesk = ' + stringToDataBAse
+    (VarToStr(cbCashdesk.EditValue));
+
+  FListMultipleTransactions.ClearResult;
+  FListMultipleTransactions.Add(xQuery);
+  FListMultipleTransactions.InvokeSQL;
+
+  cxDBLookupComboBox_Trans.Properties.KeyFieldNames := 'id';
+  cxDBLookupComboBox_Trans.Properties.ListFieldNames := 'name';
+  xQuery := 'Select id_cd_transaction as id, is_multiple  from tbl_Shortcut_User where id=%s';
+  xQuery := format(xQuery, [Fid]);
+  FTransactions.ClearResult;
+  FTransactions.Add(xQuery);
+  FTransactions.InvokeSQL;
+  if FTransactions.Count > 0 then
+  begin
+    if FTransactions.Query.FieldByName('is_multiple').AsInteger = 1 then
+    begin
+      cxDBLookupComboBox_Trans.Properties.ListSource :=
+        FListMultipleTransactions.DataSource;
+    end
+    else
+    begin
+      cxDBLookupComboBox_Trans.Properties.ListSource :=
+        FListTransactions.DataSource;
+    end;
+  end
+  else
+  begin
+    cxDBLookupComboBox_Trans.Properties.ListSource :=
+      FListTransactions.DataSource;
+
+  end;
+  cxDBLookupComboBox_Trans.DataBinding.DataField := 'id';
+  cxDBLookupComboBox_Trans.DataBinding.DataSource := FTransactions.DataSource;
+  if FTransactions.Count = 0 then
+    cxDBLookupComboBox_Trans.EditValue := 0;
+  visibleAccounts(false);
+  visibleDirection(false);
+  Onclick_Transactions(nil);
+  if FEdit then
+  begin
+    with TResultHandle.Create do
+    begin
+      xQuery := 'Select * from tbl_shortcut_user where id=%s';
+      xQuery := format(xQuery, [stringToDataBAse(Fid)]);
+      ClearResult;
+      Add(xQuery);
+      InvokeSQL;
+      cxTextEdit_Label.Text := Query.FieldByName('labels').AsString;
+      if Query.FieldByName('is_active').IsNull = false then
+      begin
+        cxCheckBox_Active.Checked :=
+          Boolean(Query.FieldByName('is_active').AsInteger);
+      end
+      else
+      begin
+        cxCheckBox_Active.Checked := false;
+      end;
+      if Query.FieldByName('is_multiple').IsNull = false then
+      begin
+        cxCheckBox_Multiple.Checked :=
+          Boolean(Query.FieldByName('is_multiple').AsInteger);
+      end
+      else
+      begin
+        cxCheckBox_Multiple.Checked := false;
+      end;
+      OnClick_Multiple(nil);
+      if ComboBox_Direction.visible then
+      begin
+        if Query.FieldByName('direction').AsInteger = 1 then
+        begin
+          ComboBox_Direction.ItemIndex := 0;
+        end
+        else if Query.FieldByName('direction').AsInteger = 2 then
+        begin
+          ComboBox_Direction.ItemIndex := 1;
+        end;
+      end;
+
+      ClearResult;
+      xQuery := 'Select * from tbl_shortcut_user_values where id_shortcut_user =%s';
+      xQuery := format(xQuery, [stringToDataBAse(Fid)]);
+      Add(xQuery);
+      InvokeSQL;
+      if Query.FieldByName('amountin').AsString <> '' then
+      begin
+        edAmountIn.Text := Query.FieldByName('amountin').AsString;
+      end;
+      if Query.FieldByName('amountout').AsString <> '' then
+      begin
+        edAmountOUT.Text := Query.FieldByName('amountout').AsString;
+      end;
+
+      ClearResult;
+      free;
+    end;
+  end;
+end;
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.RefreshListShortCut;
+
+var
+  xQuery: string;
+begin
+  xQuery := ' select tbl_shortcut_user.id, is_active, is_multiple, ' +
+    ' case when is_multiple=1 then t2.name else t1.name end as transName, ' +
+    ' tbl_cd.cd_name,labels, ' +
+    ' case when tbl_shortcut_user.direction =1 then ''IN'' else ''OUT'' end as dir, '
+    + ' tbl_accounts.name from tbl_shortcut_user ' +
+    ' left join  tbl_cd_transactions cdt on cdt.id_Transaction=tbl_shortcut_user.id_cd_transaction '
+    + ' left join tbl_transactions as t1 on cdt.id_transaction=t1.id ' +
+    ' left join tbl_cd_multiple_transactions  ' +
+    ' cdtm on cdtm.id_multiple_transaction=tbl_shortcut_user.id_cd_transaction '
+    + ' left join tbl_transactions as t2 on cdtm.id_multiple_transaction=t2.id   '
+    + ' left join tbl_cd on tbl_shortcut_user.id_cashdesk=tbl_cd.id  ' +
+    ' left join tbl_accounts on ' +
+    ' tbl_accounts.account_id =cast(tbl_shortcut_user.id_account as varchar) ' +
+    ' where  tbl_shortcut_user.id_cashdesk=' +
+    stringToDataBAse(VarToStr(cbCashdesk.EditValue)) +
+    ' group by tbl_shortcut_user.id, is_active, is_multiple,t2.name,t1.name,tbl_cd.cd_name,'
+    + ' labels,tbl_shortcut_user.direction,tbl_accounts.name  ' +
+    ' order by tbl_cd.cd_name ';
+  PgQuerylistOfShortCut.SQL.Clear;
+  if PgQuerylistOfShortCut.Active then
+    PgQuerylistOfShortCut.Close;
+  PgQuerylistOfShortCut.SQL.Add(xQuery);
+  PgQuerylistOfShortCut.Open;
+end;
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.OnClick_Multiple(Asender: TObject);
+begin
+  if cxCheckBox_Multiple.Checked then // Multiple transactions
+  begin
+    if cxDBLookupComboBox_Trans.Properties.ListSource <>
+      FListMultipleTransactions.DataSource then
+    begin
+      cxDBLookupComboBox_Trans.Properties.ListSource :=
+        FListMultipleTransactions.DataSource;
+    end;
+  end
+  else
+  begin // Transactions
+    if cxDBLookupComboBox_Trans.Properties.ListSource <> FListTransactions.DataSource
+    then
+    begin
+      cxDBLookupComboBox_Trans.Properties.ListSource :=
+        FListTransactions.DataSource;
+    end;
+  end;
+end;
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.Onclick_Transactions(Asender: TObject);
+var
+  xTag: integer;
+  xName: string;
+  xControl: TControl;
+  xTrans: string;
+  xQuery: string;
+  xDataSet: TResultHandle;
+  xListSource: TResultHandle;
+  xAccount: TResultHandle;
+  TransactionHasNoValues: Boolean;
+
+begin
+  TransactionHasNoValues := True;
+  xTrans := VarToStr(cxDBLookupComboBox_Trans.EditValue);
+  if ((xTrans <> '0') and (xTrans <> EmptyStr)) then
+  begin
+    xQuery := ' Select is_multiple_accounts_manual, is_multiple_accounts_fixed, direction '
+      + ' from  tbl_transactions   ' +
+      ' join tbl_cd_transactions on tbl_cd_transactions.id_transaction=tbl_transactions.id '
+      + ' and id_cashDesk=%s and id_Transaction=%s ';
+
+    xQuery := format(xQuery, [stringToDataBAse(VarToStr(cbCashdesk.EditValue)),
+      stringToDataBAse(xTrans)]);
+    xDataSet := TResultHandle.Create;
+    xDataSet.ClearResult;
+    xDataSet.Add(xQuery);
+    xDataSet.InvokeSQL;
+    if ((xDataSet.Query.FieldByName('is_multiple_accounts_manual')
+      .AsInteger = 1) or
+      (xDataSet.Query.FieldByName('is_multiple_accounts_fixed').AsInteger = 1))
+    then
+    begin
+      visibleAccounts(True);
+      // DBLookupCombo_Accounts
+
+      if xDataSet.Query.FieldByName('is_multiple_accounts_manual').AsInteger = 1
+      then
+      begin
+        xQuery := ' Select tbl_accounts.account_id as id, tbl_accounts.name from tbl_accounts '
+          + ' join  tbl_transactions_accounts_manual on tbl_accounts.account_id=tbl_transactions_accounts_manual.account_id  '
+          + ' and  tbl_transactions_accounts_manual.id_transaction = %s';
+        xQuery := format(xQuery, [stringToDataBAse(xTrans)]);
+      end
+      else if xDataSet.Query.FieldByName('is_multiple_accounts_fixed')
+        .AsInteger = 1 then
+      begin
+        xQuery := ' Select tbl_accounts.account_id as id , tbl_accounts.name from tbl_accounts '
+          + ' join  tbl_transactions_accounts_fixed on tbl_accounts.account_id=tbl_transactions_accounts_fixed.account_id  '
+          + ' and  tbl_transactions_accounts_fixed.id_transaction =%s ';
+        xQuery := format(xQuery, [stringToDataBAse(xTrans)]);
+      end;
+      xListSource := TResultHandle.Create;
+      xListSource.ClearResult;
+      xListSource.Add(xQuery);
+      xListSource.InvokeSQL;
+      cxDBLookupCombo_Accounts.Properties.ListSource := xListSource.DataSource;
+      cxDBLookupCombo_Accounts.Properties.KeyFieldNames := 'id';
+      cxDBLookupCombo_Accounts.Properties.ListFieldNames := 'name';
+      xQuery := 'Select id_account as id from  tbl_Shortcut_User  where id=%s ';
+      xQuery := format(xQuery, [stringToDataBAse(Fid)]);
+      xAccount := TResultHandle.Create;
+      xAccount.ClearResult;
+      xAccount.Add(xQuery);
+      xAccount.InvokeSQL;
+      cxDBLookupCombo_Accounts.DataBinding.DataField := 'id';
+      cxDBLookupCombo_Accounts.DataBinding.DataSource := xAccount.DataSource;
+    end
+    else
+    begin // end is_multiple_fixed
+      visibleAccounts(false);
+    end;
+    if xDataSet.Query.FieldByName('direction').AsInteger = 3 then
+    begin
+      visibleDirection(True);
+    end
+    else
+    begin
+      visibleDirection(false);
+    end;
+    if FEdit = false then
+    begin
+      DeleteNewValues;
+      PrepareNewValues;
+    end;
+
+    with TResultHandle.Create do
+    begin
+      Add('Select count(*) as id from  tbl_shortcut_user_values where ' +
+        ' ((tbl_shortcut_user_values.Amountin is not null) and (tbl_shortcut_user_values.AmountOut is not null)) '
+        + ' and id_shortcut_user=' + stringToDataBAse(Fid));
+      InvokeSQL;
+      TransactionHasNoValues := Query.FieldByName('id').AsInteger = 0;
+      free;
+    end;
+
+    cxLabel_DefaultValues.visible := TransactionHasNoValues = false;
+    cxGrid_Values.visible := TransactionHasNoValues = false;
+
+    edAmountIn.visible :=
+      ((xDataSet.Query.FieldByName('direction').AsInteger = 1) or
+      ((xDataSet.Query.FieldByName('direction').AsInteger = 3) and
+      // in
+      (ComboBox_Direction.Text = '1'))) and TransactionHasNoValues;
+
+    cxLabel_AoumntIn.visible := edAmountIn.visible;
+
+    edAmountOUT.visible :=
+      ((xDataSet.Query.FieldByName('direction').AsInteger = 2) or
+      ((xDataSet.Query.FieldByName('direction').AsInteger = 3) and
+      // out
+      (ComboBox_Direction.Text = '2'))) and TransactionHasNoValues;
+
+    cxLabel_AmountOut.visible := edAmountOUT.visible;
+
+    xQuery := ' Select id, nr,category_name, currency_symbol, multiplier  from tbl_shortcut_user_values  '
+      + ' where id_shortcut_user=%s';
+    xQuery := format(xQuery, [stringToDataBAse(Fid)]);
+    if PgQuery_Values.Active then
+      PgQuery_Values.Close;
+    PgQuery_Values.SQL.Clear;
+    PgQuery_Values.SQL.Add(xQuery);
+    PgQuery_Values.Active := false;
+    PgQuery_Values.Active := True;
+
+    xDataSet.ClearResult;
+    xDataSet.free;
+
+  end;
+end;
+
+// #########################################################################################################
+{
+  CREATE TABLE tbl_shortcut_user_values
+  (
+  id serial NOT NULL,
+  id_shortcut_user integer,
+  id_category integer,
+  id_value integer,
+  nr double precision,
+  category_name varchar,
+  currency_symbol varchar,
+  multiplier double precision,
+  CONSTRAINT pk_tbl_tbl_shortcut_user_values_id PRIMARY KEY (id)
+  )
+}
+procedure TCashShortCutManager.PrepareNewValues;
+var
+  xQuery: string;
+  xAccount: string;
+  xDirection: string;
+  xDataSet: TResultHandle;
+  xOk: Boolean;
+begin
+  xOk := True;
+  xAccount := EmptyStr;
+  xDirection := EmptyStr;
+  xQuery := 'Insert into tbl_shortcut_user(id_cd_transaction, id_cashdesk, labels, id_user, id_account, '
+    + ' direction, is_multiple, is_active) values(%s,%s,''%s'',%s,%s,%s,%s,%s)';
+
+  xQuery := format(xQuery,
+    [stringToDataBAse(VarToStr(cxDBLookupComboBox_Trans.EditValue)),
+    stringToDataBAse(VarToStr(cbCashdesk.EditValue)),
+    stringToDataBAse(cxTextEdit_Label.Text), stringToDataBAse(FidUser),
+    stringToDataBAse(xAccount), stringToDataBAse(xDirection),
+    inttostr(integer(cxCheckBox_Multiple.Checked)),
+    inttostr(integer(cxCheckBox_Active.Checked))]);
+  xDataSet := TResultHandle.Create;
+  xDataSet.Query.Connection.StartTransaction;
+  xDataSet.Add(xQuery);
+  xOk := xDataSet.ExecuteSQL;
+  if xOk then
+  begin
+
+    Fid := frmMain.GetFieldAsString
+      ('Select max(id) as id from tbl_shortcut_user order by id ', 'id');
+
+    xQuery := 'Insert into tbl_shortcut_user_values( id_shortcut_user, id_category, id_value, nr, category_name,'
+      + ' currency_symbol, multiplier) ' + ' SELECT ' + stringToDataBAse(Fid) +
+      ',  cdv.id_category, tv.id_value, 0 as nr ,  ' +
+      ' category_name(cdv.id_category), currency_symbol_of_cd_value(tv.id_value) as currency_symbol, '
+      + ' multiplier_of_cd_value(tv.id_value) as multiplier  ' +
+      ' FROM   tbl_transactions_values as tv,   tbl_cd_values as cdv ' +
+      ' WHERE   cdv.id_value = tv.id_value AND   tv.id_transaction =' +
+      stringToDataBAse(VarToStr(cxDBLookupComboBox_Trans.EditValue)) +
+      ' AND   cdv.id_cashdesk =' + stringToDataBAse
+      (VarToStr(cbCashdesk.EditValue)) +
+      ' GROUP BY   cdv.id_category,   tv.id_value  ';
+    xDataSet.ClearResult;
+    xDataSet.Add(xQuery);
+    xOk := xDataSet.ExecuteSQL;
+  end;
+  if xOk then
+  begin
+    xDataSet.Query.Connection.Commit;
+  end
+  else
+  begin
+    xDataSet.Query.Connection.Rollback;
+
+  end;
+  xDataSet.free;
+end;
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.cxButton_SaveClick(Sender: TObject);
+var
+  xQuery: string;
+  xAccount: string;
+  xDirection: string;
+  xDataSet: TResultHandle;
+  xOk: Boolean;
+  xFloat: Double;
+begin
+  inherited;
+  if CheckSave then
+  begin
+
+    xOk := True;
+    xAccount := EmptyStr;
+    xDirection := EmptyStr;
+    if cxDBLookupCombo_Accounts.visible then
+    begin
+      xAccount := stringToDataBAse
+        (VarToStr(cxDBLookupCombo_Accounts.EditValue));
+    end;
+
+    xQuery := 'Update tbl_shortcut_user set id_cd_transaction=%s, id_cashdesk=%s, labels=%s, '
+      + 'id_user=%s, id_account=%s, direction=%s, is_multiple=%s,is_active=%s where id=%s';
+
+    xQuery := format(xQuery,
+      [stringToDataBAse(VarToStr(cxDBLookupComboBox_Trans.EditValue)),
+      stringToDataBAse(VarToStr(cbCashdesk.EditValue)),
+      stringToDataBAse(cxTextEdit_Label.Text, True), stringToDataBAse(FidUser),
+      stringToDataBAse(xAccount), stringToDataBAse(xDirection),
+      inttostr(integer(cxCheckBox_Multiple.Checked)),
+      inttostr(integer(cxCheckBox_Active.Checked)), stringToDataBAse(Fid)]);
+
+    xDataSet := TResultHandle.Create;
+    xDataSet.Query.Connection.StartTransaction;
+    xDataSet.Add(xQuery);
+    xOk := xDataSet.ExecuteSQL;
+
+    if cxGrid_Values.visible then
+    begin
+      try
+        cxGridDBTableView1.DataController.Post(True);
+      except
+        xOk := false;
+      end;
+    end
+    else
+    begin
+      if xOk then
+      begin
+
+        if edAmountOUT.visible then
+        begin
+          try
+            xFloat := StrFloat(edAmountOUT.Text);
+          except
+            xFloat := 0;
+          end;
+          if FEdit = false then
+          begin
+
+            xQuery := 'Insert into tbl_shortcut_user_values(id_shortcut_user, amountout,nr) values (%s,%s,%s)';
+            xQuery := format(xQuery, [stringToDataBAse(Fid),
+              FloatStrDataBase(xFloat),FloatStrDataBase(-1) ]);
+          end
+          else
+          begin
+            xQuery := 'Update tbl_shortcut_user_values set amountout=%s where id_shortcut_user=%s';
+            xQuery := format(xQuery, [FloatStrDataBase(xFloat),
+              stringToDataBAse(Fid)]);
+          end;
+        end
+        else
+        begin
+          try
+            xFloat := StrFloat(edAmountIn.Text);
+          except
+            xFloat := 0;
+          end;
+          if FEdit = false then
+          begin
+            xQuery := 'Insert into tbl_shortcut_user_values(id_shortcut_user, amountin, nr ) values (%s,%s,%s )';
+            xQuery := format(xQuery, [stringToDataBAse(Fid),
+              FloatStrDataBase(xFloat),FloatStrDataBase(-1)]);
+          end
+          else
+          begin
+            xQuery := 'Update tbl_shortcut_user_values set amountin=%s where id_shortcut_user=%s';
+            xQuery := format(xQuery, [FloatStrDataBase(xFloat),
+              stringToDataBAse(Fid)]);
+          end;
+        end;
+        xDataSet.ClearResult;
+        xDataSet.Add(xQuery);
+        xOk := xDataSet.ExecuteSQL;
+      end;
+    end;
+    if xOk then
+    begin
+      xDataSet.Query.Connection.Commit;
+      PageControl1.ActivePage := TabSheet_ShortCutList;
+      PgQuerylistOfShortCut.Active := false;
+      PgQuerylistOfShortCut.Active := True;
+    end
+    else
+    begin
+      xDataSet.Query.Connection.Rollback;
+      Information('Error!', '');
+    end;
+    xDataSet.free;
+  end;
+end;
+
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.cxGridDBTableView_nrCustomDrawCell
+  (Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+var
+  ColumnIndex: integer;
+begin
+  inherited;
+  ColumnIndex := AViewInfo.Item.Index;
+  if ColumnIndex = 3 then
+  begin
+    ACanvas.FillRect(AViewInfo.EditBounds, clYellow);
+  end;
+end;
+
+// #########################################################################################################
+function TCashShortCutManager.CheckSave: Boolean;
+var
+  xOk: Boolean;
+begin
+  xOk := True;
+  if trim(cxTextEdit_Label.Text) = '' then
+  begin
+    xOk := false;
+    Information('Error', 'Please fill this field!');
+  end;
+  if xOk then
+  begin
+    if ((VarToStr(cxDBLookupComboBox_Trans.EditValue) = '0') or
+      (VarToStr(cxDBLookupComboBox_Trans.EditValue) = '')) then
+    begin
+      xOk := false;
+      Information('Error', 'Please fill this field!');
+    end;
+  end;
+  result := xOk;
+end;
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.btnModifyClick(Sender: TObject);
+var
+  SelectedRow: integer;
+  DC: cxGridDBDataDefinitions.TcxGridDBDataController;
+begin
+  inherited;
+  DC := cxGridDBTableView_ListValues.DataController;
+  SelectedRow := DC.FocusedRowIndex;
+  if (SelectedRow >= 0) then
+  begin
+    Fid := VarToStr(cxGridDBTableView_ListValues.ViewData.Rows[SelectedRow]
+      .Values[0]); // String
+    FEdit := True;
+    InitializeComponents;
+    InitializeEditor;
+
+    PageControl1.ActivePage := TabSheet_DetailsShortCut;
+  end;
+end;
+
+// #########################################################################################################
+
+procedure TCashShortCutManager.btnDeleteClick(Sender: TObject);
+var
+  SelectedRow: integer;
+  DC: cxGridDBDataDefinitions.TcxGridDBDataController;
+  xQuery: string;
+  xDataSet: TResultHandle;
+  xId: string;
+  xOk: Boolean;
+begin
+  inherited;
+  xOk := True;
+  DC := cxGridDBTableView_ListValues.DataController;
+  SelectedRow := DC.FocusedRowIndex;
+  if (SelectedRow >= 0) then
+  begin
+    xDataSet := TResultHandle.Create;
+    xDataSet.Query.Connection.StartTransaction;
+    xId := VarToStr(cxGridDBTableView_ListValues.ViewData.Rows[SelectedRow]
+      .Values[0]); // String
+    xQuery := 'Delete from tbl_shortcut_user_values where id_shortcut_user=' +
+      stringToDataBAse(xId, True);
+    xDataSet.Add(xQuery);
+    xOk := xDataSet.ExecuteSQL;
+    if xOk then
+    begin
+      xDataSet.ClearResult;
+      xQuery := 'Delete from tbl_shortcut_user where id=' +
+        stringToDataBAse(xId, True);
+      xDataSet.Add(xQuery);
+      xOk := xDataSet.ExecuteSQL;
+    end;
+    if xOk then begin
+      xDataSet.Query.Connection.Commit;
+      PgQuerylistOfShortCut.Active:=false;
+      PgQuerylistOfShortCut.Active:=true;
+    end else begin
+      xDataSet.Query.Connection.Rollback;
+    end;
+    xDataSet.ClearResult;
+    xDataSet.Free;
+
+  end;
+end;
+
+// #########################################################################################################
+
+end.
